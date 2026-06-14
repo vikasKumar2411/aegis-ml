@@ -1,0 +1,16 @@
+[
+  {
+    "model_id": "email_identification_model",
+    "check_name": "null_body_rate",
+    "current_value": 0.02,
+    "baseline_value": 0.02,
+    "is_issue": false
+  },
+  {
+    "model_id": "email_identification_model",
+    "check_name": "duplicate_email_rate",
+    "current_value": 0.01,
+    "baseline_value": 0.01,
+    "is_issue": false
+  }
+]

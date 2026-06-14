@@ -1,0 +1,20 @@
+[
+  {
+    "model_id": "email_identification_model",
+    "sample_id": "SAMPLE-001",
+    "actual_label": "secure",
+    "predicted_label": "rfp",
+    "error_type": "false_negative",
+    "text": "Please access the secure portal to retrieve the confidential proposal package.",
+    "pattern": "new_secure_email_patterns"
+  },
+  {
+    "model_id": "email_identification_model",
+    "sample_id": "SAMPLE-002",
+    "actual_label": "secure",
+    "predicted_label": "rfp",
+    "error_type": "false_negative",
+    "text": "Encrypted message available through protected delivery link.",
+    "pattern": "new_secure_email_patterns"
+  }
+]

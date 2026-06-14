@@ -1,0 +1,315 @@
+{
+  "report_id": "REPORT-ALERT-001",
+  "alert_id": "ALERT-001",
+  "model_id": "email_identification_model",
+  "goal": "Investigate production ML alert ALERT-001 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
+  "alert": {
+    "alert_id": "ALERT-001",
+    "model_id": "email_identification_model",
+    "model_version": "v42",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.78,
+    "baseline_value": 0.91,
+    "severity": "high",
+    "window_start": "2026-06-01T00:00:00Z",
+    "window_end": "2026-06-14T00:00:00Z",
+    "description": "Secure email recall dropped significantly in production.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  },
+  "plan": [
+    {
+      "step_id": 1,
+      "action": "check_model_performance",
+      "target": "email_identification_model",
+      "reason": "Confirm the model-performance degradation reported by the alert."
+    },
+    {
+      "step_id": 2,
+      "action": "analyze_prediction_errors",
+      "target": "email_identification_model",
+      "reason": "Inspect false positives or false negatives to identify emerging error patterns."
+    },
+    {
+      "step_id": 3,
+      "action": "check_feature_drift",
+      "target": "email_identification_model",
+      "reason": "Determine whether input feature distributions shifted during the alert window."
+    },
+    {
+      "step_id": 4,
+      "action": "check_recent_deployments",
+      "target": "email_identification_model",
+      "reason": "Rule out a recent model or pipeline deployment as the cause of degradation."
+    },
+    {
+      "step_id": 5,
+      "action": "check_schema_drift",
+      "target": "email_identification_model",
+      "reason": "Verify that the production input schema has not changed."
+    },
+    {
+      "step_id": 6,
+      "action": "check_data_quality",
+      "target": "email_identification_model",
+      "reason": "Check whether upstream data-quality issues contributed to the alert."
+    }
+  ],
+  "plan_quality": {
+    "is_sufficient": true,
+    "feedback": []
+  },
+  "plan_validation": {
+    "is_valid": true,
+    "approved_steps": [
+      {
+        "step_id": 1,
+        "action": "check_model_performance",
+        "target": "email_identification_model",
+        "reason": "Confirm the model-performance degradation reported by the alert."
+      },
+      {
+        "step_id": 2,
+        "action": "analyze_prediction_errors",
+        "target": "email_identification_model",
+        "reason": "Inspect false positives or false negatives to identify emerging error patterns."
+      },
+      {
+        "step_id": 3,
+        "action": "check_feature_drift",
+        "target": "email_identification_model",
+        "reason": "Determine whether input feature distributions shifted during the alert window."
+      },
+      {
+        "step_id": 4,
+        "action": "check_recent_deployments",
+        "target": "email_identification_model",
+        "reason": "Rule out a recent model or pipeline deployment as the cause of degradation."
+      },
+      {
+        "step_id": 5,
+        "action": "check_schema_drift",
+        "target": "email_identification_model",
+        "reason": "Verify that the production input schema has not changed."
+      },
+      {
+        "step_id": 6,
+        "action": "check_data_quality",
+        "target": "email_identification_model",
+        "reason": "Check whether upstream data-quality issues contributed to the alert."
+      }
+    ],
+    "approved_step_count": 6,
+    "rejected_step_count": 0,
+    "invalid_reasons": []
+  },
+  "completed_steps": [
+    "check_model_performance",
+    "analyze_prediction_errors",
+    "check_feature_drift",
+    "check_recent_deployments",
+    "check_schema_drift",
+    "check_data_quality"
+  ],
+  "evidence": [
+    {
+      "evidence_id": "EVID-email_identification_model-secure_email_recall",
+      "source": "model_performance_service",
+      "finding": "secure_email_recall dropped from 0.91 to 0.78, a decline of 0.13.",
+      "supports": "model_performance_drop",
+      "confidence": 0.95,
+      "metadata": {
+        "model_id": "email_identification_model",
+        "metric": "secure_email_recall",
+        "baseline_value": 0.91,
+        "current_value": 0.78,
+        "drop": 0.13,
+        "is_significant": true
+      }
+    },
+    {
+      "evidence_id": "EVID-email_identification_model-prediction-errors",
+      "source": "prediction_error_service",
+      "finding": "2 false-negative samples share dominant pattern: new_secure_email_patterns.",
+      "supports": "new_secure_email_patterns",
+      "confidence": 0.9,
+      "metadata": {
+        "false_negative_count": 2,
+        "pattern_counts": {
+          "new_secure_email_patterns": 2
+        },
+        "samples": [
+          {
+            "model_id": "email_identification_model",
+            "sample_id": "SAMPLE-001",
+            "actual_label": "secure",
+            "predicted_label": "rfp",
+            "error_type": "false_negative",
+            "text": "Please access the secure portal to retrieve the confidential proposal package.",
+            "pattern": "new_secure_email_patterns"
+          },
+          {
+            "model_id": "email_identification_model",
+            "sample_id": "SAMPLE-002",
+            "actual_label": "secure",
+            "predicted_label": "rfp",
+            "error_type": "false_negative",
+            "text": "Encrypted message available through protected delivery link.",
+            "pattern": "new_secure_email_patterns"
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "EVID-email_identification_model-feature-drift",
+      "source": "feature_drift_service",
+      "finding": "Feature drift detected in: secure_phrase_count.",
+      "supports": "feature_drift_detected",
+      "confidence": 0.85,
+      "metadata": {
+        "drifted_features": [
+          {
+            "model_id": "email_identification_model",
+            "feature_name": "secure_phrase_count",
+            "drift_score": 0.41,
+            "threshold": 0.2,
+            "is_drifted": true,
+            "summary": "Increase in new secure email phrasing not seen in training data."
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "EVID-email_identification_model-deployment-correlation",
+      "source": "deployment_service",
+      "finding": "No deployment event appears correlated with the alert window.",
+      "supports": "deployment_issue_excluded",
+      "confidence": 0.85,
+      "metadata": {
+        "deployments_checked": [
+          {
+            "model_id": "email_identification_model",
+            "deployment_id": "DEPLOY-100",
+            "model_version": "v42",
+            "deployed_at": "2026-05-15T10:00:00Z",
+            "change_type": "model_refresh",
+            "status": "success",
+            "correlates_with_alert": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "EVID-email_identification_model-schema-drift",
+      "source": "schema_drift_service",
+      "finding": "No schema drift detected; expected and observed fields match.",
+      "supports": "schema_drift_excluded",
+      "confidence": 0.85,
+      "metadata": {
+        "model_id": "email_identification_model",
+        "schema_version": "schema-v12",
+        "expected_fields": [
+          "subject",
+          "body",
+          "sender",
+          "attachment_count"
+        ],
+        "observed_fields": [
+          "subject",
+          "body",
+          "sender",
+          "attachment_count"
+        ],
+        "missing_fields": [],
+        "extra_fields": [],
+        "schema_drift_detected": false
+      }
+    },
+    {
+      "evidence_id": "EVID-email_identification_model-data-quality",
+      "source": "data_quality_service",
+      "finding": "No data-quality issues detected in monitored checks.",
+      "supports": "data_quality_issue_excluded",
+      "confidence": 0.8,
+      "metadata": {
+        "checks": [
+          {
+            "model_id": "email_identification_model",
+            "check_name": "null_body_rate",
+            "current_value": 0.02,
+            "baseline_value": 0.02,
+            "is_issue": false
+          },
+          {
+            "model_id": "email_identification_model",
+            "check_name": "duplicate_email_rate",
+            "current_value": 0.01,
+            "baseline_value": 0.01,
+            "is_issue": false
+          }
+        ]
+      }
+    }
+  ],
+  "root_cause": {
+    "root_cause": "new_secure_email_patterns",
+    "confidence": 0.85,
+    "summary": "The model performance drop is most likely caused by new secure-email language patterns. Evidence shows a significant recall drop, false negatives with new secure phrasing, feature drift in secure phrase count, and no correlated deployment issue.",
+    "alternative_causes": [
+      {
+        "cause": "bad_model_deployment",
+        "confidence": 0.1,
+        "reason": "Deployment correlation was checked and no correlated deployment event was found."
+      },
+      {
+        "cause": "schema_drift",
+        "confidence": 0.03,
+        "reason": "Schema drift was checked and excluded."
+      },
+      {
+        "cause": "data_quality_issue",
+        "confidence": 0.02,
+        "reason": "Data-quality checks did not show degradation."
+      }
+    ]
+  },
+  "root_cause_validation": {
+    "is_valid": true,
+    "root_cause": "new_secure_email_patterns",
+    "confidence": 0.85,
+    "required_evidence": [
+      "deployment_issue_excluded",
+      "model_performance_drop",
+      "new_secure_email_patterns"
+    ],
+    "available_evidence": [
+      "data_quality_issue_excluded",
+      "deployment_issue_excluded",
+      "feature_drift_detected",
+      "model_performance_drop",
+      "new_secure_email_patterns",
+      "schema_drift_excluded"
+    ],
+    "missing_evidence": [],
+    "feedback": []
+  },
+  "remediation": {
+    "recommended_action": "retrain_model_with_recent_secure_email_examples",
+    "priority": "high",
+    "human_approval_required": true,
+    "reason": "False negatives show new secure-email phrasing that the current model does not recognize reliably.",
+    "actions": [
+      "Add recent false-negative secure email examples to the labeling queue.",
+      "Retrain the email identification model with updated secure-email patterns.",
+      "Run regression evaluation against existing RFP and secure-email test sets.",
+      "Add monitoring for secure phrase drift and false-negative rate.",
+      "Require human approval before production deployment."
+    ]
+  },
+  "warnings": [],
+  "errors": [],
+  "replans": 0
+}

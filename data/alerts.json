@@ -1,0 +1,19 @@
+[
+  {
+    "alert_id": "ALERT-001",
+    "model_id": "email_identification_model",
+    "model_version": "v42",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.78,
+    "baseline_value": 0.91,
+    "severity": "high",
+    "window_start": "2026-06-01T00:00:00Z",
+    "window_end": "2026-06-14T00:00:00Z",
+    "description": "Secure email recall dropped significantly in production.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  }
+]

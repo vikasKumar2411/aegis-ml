@@ -1,0 +1,11 @@
+[
+  {
+    "model_id": "email_identification_model",
+    "deployment_id": "DEPLOY-100",
+    "model_version": "v42",
+    "deployed_at": "2026-05-15T10:00:00Z",
+    "change_type": "model_refresh",
+    "status": "success",
+    "correlates_with_alert": false
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "model_id": "email_identification_model",
+    "metric": "secure_email_recall",
+    "baseline_value": 0.91,
+    "current_value": 0.78,
+    "drop": 0.13,
+    "is_significant": true
+  },
+  {
+    "model_id": "email_identification_model",
+    "metric": "rfp_precision",
+    "baseline_value": 0.94,
+    "current_value": 0.93,
+    "drop": 0.01,
+    "is_significant": false
+  }
+]

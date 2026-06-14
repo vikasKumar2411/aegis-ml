@@ -1,0 +1,18 @@
+[
+  {
+    "model_id": "email_identification_model",
+    "feature_name": "secure_phrase_count",
+    "drift_score": 0.41,
+    "threshold": 0.20,
+    "is_drifted": true,
+    "summary": "Increase in new secure email phrasing not seen in training data."
+  },
+  {
+    "model_id": "email_identification_model",
+    "feature_name": "attachment_count",
+    "drift_score": 0.05,
+    "threshold": 0.20,
+    "is_drifted": false,
+    "summary": "No meaningful drift in attachment count."
+  }
+]
