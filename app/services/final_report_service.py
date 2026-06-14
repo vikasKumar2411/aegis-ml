@@ -27,23 +27,37 @@ class FinalReportService:
             "report_id": report_id,
             "alert_id": state.alert_id,
             "model_id": state.model_id,
+            "status": getattr(state, "status", "completed"),
             "goal": state.goal,
             "alert": state.alert,
+
+            "execution_metadata": {
+                "investigation_mode": state.alert.get("investigation_mode"),
+                "planning_mode": getattr(state, "planning_mode", "deterministic"),
+                "root_cause_mode": getattr(state, "root_cause_mode", "deterministic"),
+                "replans": state.replans,
+                "max_replans": state.max_replans,
+            },
+
+            "initial_plan": [step.model_dump() for step in state.initial_plan],
+            "final_plan": [step.model_dump() for step in state.plan],
             "plan": [step.model_dump() for step in state.plan],
+
             "plan_quality": plan_quality,
             "plan_validation": self._serialize_validation(plan_validation),
-            "completed_steps": state.completed_steps,
+
             "evidence": [item.model_dump() for item in state.evidence],
-            "root_cause": (
-                state.root_cause.model_dump() if state.root_cause else None
-            ),
+
+            "root_cause": state.root_cause.model_dump() if state.root_cause else None,
             "root_cause_validation": root_cause_validation,
-            "remediation": (
-                state.remediation.model_dump() if state.remediation else None
-            ),
+
+            "remediation": state.remediation.model_dump() if state.remediation else None,
+
+            "repair_history": state.repair_history,
+            "replans": state.replans,
+
             "warnings": state.warnings,
             "errors": state.errors,
-            "replans": state.replans,
         }
 
         state.final_report = report

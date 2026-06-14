@@ -2,6 +2,7 @@
   "report_id": "REPORT-ALERT-001",
   "alert_id": "ALERT-001",
   "model_id": "email_identification_model",
+  "status": "completed",
   "goal": "Investigate production ML alert ALERT-001 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
   "alert": {
     "alert_id": "ALERT-001",
@@ -18,44 +19,116 @@
     "metadata": {
       "owner": "ml-platform",
       "business_unit": "insurance"
-    }
+    },
+    "investigation_mode": "llm"
   },
-  "plan": [
+  "execution_metadata": {
+    "investigation_mode": "llm",
+    "planning_mode": "llm",
+    "root_cause_mode": "llm",
+    "replans": 1,
+    "max_replans": 2
+  },
+  "initial_plan": [
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model",
-      "reason": "Confirm the model-performance degradation reported by the alert."
+      "target": "email_identification_model v42",
+      "reason": "Verify if the model performance has degraded in terms of secure_email_recall."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "email_identification_model",
-      "reason": "Inspect false positives or false negatives to identify emerging error patterns."
+      "target": "email_identification_model v42 predictions",
+      "reason": "Identify specific errors that led to the drop in secure_email_recall."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model",
-      "reason": "Determine whether input feature distributions shifted during the alert window."
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if there has been a shift in input feature distribution affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
-      "target": "email_identification_model",
-      "reason": "Rule out a recent model or pipeline deployment as the cause of degradation."
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure_email_recall."
+    }
+  ],
+  "final_plan": [
+    {
+      "step_id": 1,
+      "action": "check_model_performance",
+      "target": "email_identification_model v42",
+      "reason": "Verify if the model performance has degraded in terms of secure_email_recall."
+    },
+    {
+      "step_id": 2,
+      "action": "analyze_prediction_errors",
+      "target": "email_identification_model v42 predictions",
+      "reason": "Identify specific errors that led to the drop in secure_email_recall."
+    },
+    {
+      "step_id": 3,
+      "action": "check_feature_drift",
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if there has been a shift in input feature distribution affecting model performance."
+    },
+    {
+      "step_id": 4,
+      "action": "check_recent_deployments",
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure_email_recall."
     },
     {
       "step_id": 5,
       "action": "check_schema_drift",
       "target": "email_identification_model",
-      "reason": "Verify that the production input schema has not changed."
+      "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
     },
     {
       "step_id": 6,
       "action": "check_data_quality",
       "target": "email_identification_model",
-      "reason": "Check whether upstream data-quality issues contributed to the alert."
+      "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
+    }
+  ],
+  "plan": [
+    {
+      "step_id": 1,
+      "action": "check_model_performance",
+      "target": "email_identification_model v42",
+      "reason": "Verify if the model performance has degraded in terms of secure_email_recall."
+    },
+    {
+      "step_id": 2,
+      "action": "analyze_prediction_errors",
+      "target": "email_identification_model v42 predictions",
+      "reason": "Identify specific errors that led to the drop in secure_email_recall."
+    },
+    {
+      "step_id": 3,
+      "action": "check_feature_drift",
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if there has been a shift in input feature distribution affecting model performance."
+    },
+    {
+      "step_id": 4,
+      "action": "check_recent_deployments",
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure_email_recall."
+    },
+    {
+      "step_id": 5,
+      "action": "check_schema_drift",
+      "target": "email_identification_model",
+      "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
+    },
+    {
+      "step_id": 6,
+      "action": "check_data_quality",
+      "target": "email_identification_model",
+      "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
     }
   ],
   "plan_quality": {
@@ -68,52 +141,32 @@
       {
         "step_id": 1,
         "action": "check_model_performance",
-        "target": "email_identification_model",
-        "reason": "Confirm the model-performance degradation reported by the alert."
+        "target": "email_identification_model v42",
+        "reason": "Verify if the model performance has degraded in terms of secure_email_recall."
       },
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "email_identification_model",
-        "reason": "Inspect false positives or false negatives to identify emerging error patterns."
+        "target": "email_identification_model v42 predictions",
+        "reason": "Identify specific errors that led to the drop in secure_email_recall."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
-        "target": "email_identification_model",
-        "reason": "Determine whether input feature distributions shifted during the alert window."
+        "target": "input features for email_identification_model v42",
+        "reason": "Check if there has been a shift in input feature distribution affecting model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
-        "target": "email_identification_model",
-        "reason": "Rule out a recent model or pipeline deployment as the cause of degradation."
-      },
-      {
-        "step_id": 5,
-        "action": "check_schema_drift",
-        "target": "email_identification_model",
-        "reason": "Verify that the production input schema has not changed."
-      },
-      {
-        "step_id": 6,
-        "action": "check_data_quality",
-        "target": "email_identification_model",
-        "reason": "Check whether upstream data-quality issues contributed to the alert."
+        "target": "production environment",
+        "reason": "Rule out any recent deployment issues that might have caused the drop in secure_email_recall."
       }
     ],
-    "approved_step_count": 6,
+    "approved_step_count": 4,
     "rejected_step_count": 0,
     "invalid_reasons": []
   },
-  "completed_steps": [
-    "check_model_performance",
-    "analyze_prediction_errors",
-    "check_feature_drift",
-    "check_recent_deployments",
-    "check_schema_drift",
-    "check_data_quality"
-  ],
   "evidence": [
     {
       "evidence_id": "EVID-email_identification_model-secure_email_recall",
@@ -256,36 +309,28 @@
   ],
   "root_cause": {
     "root_cause": "new_secure_email_patterns",
-    "confidence": 0.85,
-    "summary": "The model performance drop is most likely caused by new secure-email language patterns. Evidence shows a significant recall drop, false negatives with new secure phrasing, feature drift in secure phrase count, and no correlated deployment issue.",
+    "confidence": 0.95,
+    "summary": "The drop in secure email recall is strongly supported by the presence of two false-negative samples with a new secure email pattern, indicating that the model struggles to identify emails using this pattern.",
     "alternative_causes": [
       {
-        "cause": "bad_model_deployment",
-        "confidence": 0.1,
-        "reason": "Deployment correlation was checked and no correlated deployment event was found."
-      },
-      {
-        "cause": "schema_drift",
-        "confidence": 0.03,
-        "reason": "Schema drift was checked and excluded."
-      },
-      {
-        "cause": "data_quality_issue",
-        "confidence": 0.02,
-        "reason": "Data-quality checks did not show degradation."
+        "cause": "feature_drift",
+        "confidence": 0.85,
+        "reason": "Feature drift in 'secure_phrase_count' suggests an increase in new patterns not seen during training."
       }
-    ]
+    ],
+    "metadata": {
+      "reasoning_mode": "llm",
+      "llm_provider": "ollama",
+      "llm_model": "qwen2.5:7b-instruct",
+      "used_fallback": false,
+      "llm_warning": null
+    }
   },
   "root_cause_validation": {
     "is_valid": true,
-    "root_cause": "new_secure_email_patterns",
-    "confidence": 0.85,
-    "required_evidence": [
-      "deployment_issue_excluded",
-      "model_performance_drop",
-      "new_secure_email_patterns"
-    ],
-    "available_evidence": [
+    "feedback": [],
+    "missing_evidence": [],
+    "evidence_supports": [
       "data_quality_issue_excluded",
       "deployment_issue_excluded",
       "feature_drift_detected",
@@ -293,8 +338,7 @@
       "new_secure_email_patterns",
       "schema_drift_excluded"
     ],
-    "missing_evidence": [],
-    "feedback": []
+    "confidence": 0.95
   },
   "remediation": {
     "recommended_action": "retrain_model_with_recent_secure_email_examples",
@@ -309,7 +353,52 @@
       "Require human approval before production deployment."
     ]
   },
-  "warnings": [],
-  "errors": [],
-  "replans": 0
+  "repair_history": [
+    {
+      "replan_number": 1,
+      "reason": "root_cause_validation_failed",
+      "missing_evidence": [
+        "schema_drift_excluded",
+        "data_quality_issue_excluded"
+      ],
+      "repair_steps": [
+        {
+          "step_id": 5,
+          "action": "check_schema_drift",
+          "target": "email_identification_model",
+          "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
+        },
+        {
+          "step_id": 6,
+          "action": "check_data_quality",
+          "target": "email_identification_model",
+          "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
+        }
+      ]
+    },
+    {
+      "replan_number": 1,
+      "reason": "root_cause_revalidated_after_repair",
+      "root_cause_validation": {
+        "is_valid": true,
+        "feedback": [],
+        "missing_evidence": [],
+        "evidence_supports": [
+          "data_quality_issue_excluded",
+          "deployment_issue_excluded",
+          "feature_drift_detected",
+          "model_performance_drop",
+          "new_secure_email_patterns",
+          "schema_drift_excluded"
+        ],
+        "confidence": 0.95
+      }
+    }
+  ],
+  "replans": 1,
+  "warnings": [
+    "Root cause validation failed: ['Missing schema-drift exclusion evidence.', 'Missing data-quality exclusion evidence.']",
+    "Adaptive evidence repair triggered with 2 follow-up step(s)."
+  ],
+  "errors": []
 }

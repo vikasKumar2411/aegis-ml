@@ -36,6 +36,7 @@ class RootCause(BaseModel):
     confidence: float
     summary: str
     alternative_causes: List[Dict[str, Any]] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class RemediationRecommendation(BaseModel):
@@ -54,27 +55,40 @@ class RemediationRecommendation(BaseModel):
 class PipelineState(BaseModel):
     """
     Global state for one AegisML investigation run.
-    This is the object passed across planner, executor, validators,
-    root-cause analysis, and report generation.
+
+    This object is passed across the planner, plan critic, validator,
+    executor, root-cause agent, evidence repair loop, remediation service,
+    and report generation service.
     """
 
     alert_id: str
     model_id: str
     goal: str
+    status: str = "initialized"
 
     alert: Dict[str, Any] = Field(default_factory=dict)
 
+    # Investigation plan and evidence
+    initial_plan: List[DiagnosticStep] = Field(default_factory=list)
     plan: List[DiagnosticStep] = Field(default_factory=list)
     evidence: List[EvidenceItem] = Field(default_factory=list)
 
+    # Mode / audit metadata
+    planning_mode: str = "deterministic"
+    root_cause_mode: str = "deterministic"
+
+    # Final reasoning outputs
     root_cause: Optional[RootCause] = None
     remediation: Optional[RemediationRecommendation] = None
     final_report: Optional[Dict[str, Any]] = None
 
+    # Execution state
     completed_steps: List[str] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
     errors: List[str] = Field(default_factory=list)
 
+    # Adaptive replanning / evidence repair state
+    repair_history: List[Dict[str, Any]] = Field(default_factory=list)
     replans: int = 0
     max_replans: int = 2
 
@@ -89,3 +103,6 @@ class PipelineState(BaseModel):
 
     def mark_step_completed(self, action: str) -> None:
         self.completed_steps.append(action)
+
+    def add_repair_record(self, record: Dict[str, Any]) -> None:
+        self.repair_history.append(record)

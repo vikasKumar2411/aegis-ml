@@ -10,14 +10,21 @@ class PlannerAgent:
     For v0.1 this is deterministic, but the interface is agent-shaped.
     Later we can replace the internals with an LLM planner while keeping
     the same contract.
+
+    simulate_incomplete_plan is used only for testing adaptive evidence repair.
+    It intentionally removes a required diagnostic step so the root-cause
+    validator can detect missing evidence and trigger a follow-up repair plan.
     """
+
+    def __init__(self, simulate_incomplete_plan: bool = False) -> None:
+        self.simulate_incomplete_plan = simulate_incomplete_plan
 
     def generate_plan(self, alert: Dict) -> List[DiagnosticStep]:
         metric = alert.get("metric", "")
         model_id = alert["model_id"]
 
         if "recall" in metric or "precision" in metric or "f1" in metric:
-            return [
+            plan = [
                 DiagnosticStep(
                     step_id=1,
                     action="check_model_performance",
@@ -55,6 +62,21 @@ class PlannerAgent:
                     reason="Check whether upstream data-quality issues contributed to the alert.",
                 ),
             ]
+
+            if self.simulate_incomplete_plan:
+                # Intentionally omit deployment check so adaptive evidence repair
+                # can recover it during the root-cause validation phase.
+                plan = [
+                    step
+                    for step in plan
+                    if step.action != "check_recent_deployments"
+                ]
+
+                # Re-number step IDs after removing the deployment check.
+                for index, step in enumerate(plan, start=1):
+                    step.step_id = index
+
+            return plan
 
         return [
             DiagnosticStep(

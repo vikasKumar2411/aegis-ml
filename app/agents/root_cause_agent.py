@@ -1,4 +1,4 @@
-from typing import Dict, List, Set
+from typing import List, Set
 
 from app.state.pipeline_state import EvidenceItem, RootCause
 
@@ -41,6 +41,7 @@ class RootCauseAgent:
                         "reason": "Data-quality checks did not show degradation.",
                     },
                 ],
+                metadata={"reasoning_mode": "deterministic"},
             )
 
         if "bad_model_deployment_possible" in supports:
@@ -58,6 +59,7 @@ class RootCauseAgent:
                         "reason": "Feature drift may contribute but deployment correlation is stronger.",
                     }
                 ],
+                metadata={"reasoning_mode": "deterministic"},
             )
 
         if "schema_drift_detected" in supports:
@@ -69,6 +71,7 @@ class RootCauseAgent:
                     "because required fields changed or went missing."
                 ),
                 alternative_causes=[],
+                metadata={"reasoning_mode": "deterministic"},
             )
 
         if "data_quality_issue_detected" in supports:
@@ -79,6 +82,7 @@ class RootCauseAgent:
                     "The model degradation is likely caused by upstream data-quality issues."
                 ),
                 alternative_causes=[],
+                metadata={"reasoning_mode": "deterministic"},
             )
 
         return RootCause(
@@ -94,6 +98,7 @@ class RootCauseAgent:
                     "reason": "Required diagnostic evidence is missing or contradictory.",
                 }
             ],
+            metadata={"reasoning_mode": "deterministic"},
         )
 
     def _supports_new_secure_pattern_cause(self, supports: Set[str]) -> bool:
