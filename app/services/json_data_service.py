@@ -33,26 +33,125 @@ class JsonDataService:
         alerts = self._load_json("alerts.json")
         return next((alert for alert in alerts if alert.get("alert_id") == alert_id), None)
 
-    def get_model_metrics(self, model_id: str) -> List[Dict[str, Any]]:
+    def _filter_rows(
+        self,
+        rows: List[Dict[str, Any]],
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        filtered = [
+            row for row in rows
+            if row.get("model_id") == model_id
+        ]
+
+        if alert_id is not None:
+            alert_scoped_rows = [
+                row for row in filtered
+                if row.get("alert_id") == alert_id
+            ]
+
+            if alert_scoped_rows:
+                filtered = alert_scoped_rows
+
+        if model_version is not None:
+            version_scoped_rows = [
+                row for row in filtered
+                if row.get("model_version") == model_version
+            ]
+
+            if version_scoped_rows:
+                filtered = version_scoped_rows
+
+        return filtered
+
+
+    def get_model_metrics(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         rows = self._load_json("model_metrics.json")
-        return [row for row in rows if row.get("model_id") == model_id]
+        return self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
-    def get_feature_drift(self, model_id: str) -> List[Dict[str, Any]]:
+
+    def get_feature_drift(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         rows = self._load_json("feature_drift_results.json")
-        return [row for row in rows if row.get("model_id") == model_id]
+        return self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
-    def get_prediction_samples(self, model_id: str) -> List[Dict[str, Any]]:
+
+    def get_prediction_samples(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         rows = self._load_json("prediction_samples.json")
-        return [row for row in rows if row.get("model_id") == model_id]
+        return self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
-    def get_deployments(self, model_id: str) -> List[Dict[str, Any]]:
+
+    def get_deployments(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         rows = self._load_json("deployment_events.json")
-        return [row for row in rows if row.get("model_id") == model_id]
+        return self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
-    def get_schema_profile(self, model_id: str) -> Optional[Dict[str, Any]]:
+
+    def get_schema_profile(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
         rows = self._load_json("schema_profiles.json")
-        return next((row for row in rows if row.get("model_id") == model_id), None)
+        filtered = self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
+        return filtered[0] if filtered else None
 
-    def get_data_quality(self, model_id: str) -> List[Dict[str, Any]]:
+
+    def get_data_quality(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
         rows = self._load_json("data_quality_results.json")
-        return [row for row in rows if row.get("model_id") == model_id]
+        return self._filter_rows(
+            rows=rows,
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )

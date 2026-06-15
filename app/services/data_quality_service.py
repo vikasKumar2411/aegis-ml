@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from app.services.json_data_service import JsonDataService
 from app.state.pipeline_state import EvidenceItem
@@ -12,8 +12,17 @@ class DataQualityService:
     def __init__(self, data_service: JsonDataService) -> None:
         self.data_service = data_service
 
-    def run(self, model_id: str) -> List[EvidenceItem]:
-        checks = self.data_service.get_data_quality(model_id)
+    def run(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[EvidenceItem]:
+        checks = self.data_service.get_data_quality(
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
         if not checks:
             return [
@@ -23,7 +32,11 @@ class DataQualityService:
                     finding="No data-quality results found.",
                     supports="missing_data_quality_evidence",
                     confidence=0.30,
-                    metadata={"model_id": model_id},
+                    metadata={
+                        "model_id": model_id,
+                        "alert_id": alert_id,
+                        "model_version": model_version,
+                    },
                 )
             ]
 
@@ -34,12 +47,22 @@ class DataQualityService:
             finding = f"Data-quality issues detected: {', '.join(issue_names)}."
             supports = "data_quality_issue_detected"
             confidence = 0.85
-            metadata = {"issues": issues}
+            metadata = {
+                "model_id": model_id,
+                "alert_id": alert_id,
+                "model_version": model_version,
+                "issues": issues,
+            }
         else:
             finding = "No data-quality issues detected in monitored checks."
             supports = "data_quality_issue_excluded"
             confidence = 0.80
-            metadata = {"checks": checks}
+            metadata = {
+                "model_id": model_id,
+                "alert_id": alert_id,
+                "model_version": model_version,
+                "checks": checks,
+            }
 
         return [
             EvidenceItem(

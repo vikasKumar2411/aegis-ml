@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from app.services.json_data_service import JsonDataService
 from app.state.pipeline_state import EvidenceItem
@@ -12,8 +12,17 @@ class SchemaDriftService:
     def __init__(self, data_service: JsonDataService) -> None:
         self.data_service = data_service
 
-    def run(self, model_id: str) -> List[EvidenceItem]:
-        profile = self.data_service.get_schema_profile(model_id)
+    def run(
+        self,
+        model_id: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[EvidenceItem]:
+        profile = self.data_service.get_schema_profile(
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
 
         if not profile:
             return [
@@ -23,7 +32,11 @@ class SchemaDriftService:
                     finding="No schema profile found.",
                     supports="missing_schema_evidence",
                     confidence=0.30,
-                    metadata={"model_id": model_id},
+                    metadata={
+                        "model_id": model_id,
+                        "alert_id": alert_id,
+                        "model_version": model_version,
+                    },
                 )
             ]
 
@@ -47,6 +60,10 @@ class SchemaDriftService:
                 finding=finding,
                 supports=supports,
                 confidence=confidence,
-                metadata=profile,
+                metadata={
+                    **profile,
+                    "alert_id": alert_id or profile.get("alert_id"),
+                    "model_version": model_version or profile.get("model_version"),
+                },
             )
         ]

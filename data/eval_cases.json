@@ -20,5 +20,26 @@
     ],
     "replan_expected": true,
     "description": "Secure email recall drop caused by new secure email language patterns."
-  }
+  },
+  {
+  "case_id": "EVAL-002",
+  "alert_id": "ALERT-002",
+  "expected_root_cause": "bad_model_deployment",
+  "required_actions": [
+    "check_model_performance",
+    "analyze_prediction_errors",
+    "check_recent_deployments",
+    "check_schema_drift",
+    "check_data_quality"
+  ],
+  "required_evidence": [
+    "model_performance_drop",
+    "bad_model_deployment_possible",
+    "schema_drift_excluded",
+    "data_quality_issue_excluded"
+  ],
+  "simulate_incomplete_plan": false,
+  "replan_expected": false,
+  "description": "Precision degradation caused by a recent correlated model deployment."
+}
 ]

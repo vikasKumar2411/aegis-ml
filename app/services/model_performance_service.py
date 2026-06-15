@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from app.services.json_data_service import JsonDataService
 from app.state.pipeline_state import EvidenceItem
@@ -12,8 +12,18 @@ class ModelPerformanceService:
     def __init__(self, data_service: JsonDataService) -> None:
         self.data_service = data_service
 
-    def run(self, model_id: str, alert_metric: str) -> List[EvidenceItem]:
-        metrics = self.data_service.get_model_metrics(model_id)
+    def run(
+        self,
+        model_id: str,
+        alert_metric: str,
+        alert_id: Optional[str] = None,
+        model_version: Optional[str] = None,
+    ) -> List[EvidenceItem]:
+        metrics = self.data_service.get_model_metrics(
+            model_id=model_id,
+            alert_id=alert_id,
+            model_version=model_version,
+        )
         evidence: List[EvidenceItem] = []
 
         for row in metrics:
@@ -26,6 +36,9 @@ class ModelPerformanceService:
             current = row.get("current_value")
             drop = row.get("drop")
             is_significant = row.get("is_significant", False)
+
+            if drop is None and baseline is not None and current is not None:
+                drop = round(float(baseline) - float(current), 4)
 
             if is_significant:
                 finding = (
@@ -49,7 +62,11 @@ class ModelPerformanceService:
                     finding=finding,
                     supports=supports,
                     confidence=confidence,
-                    metadata=row,
+                    metadata={
+                        **row,
+                        "alert_id": alert_id,
+                        "model_version": model_version or row.get("model_version"),
+                    },
                 )
             )
 
@@ -61,7 +78,12 @@ class ModelPerformanceService:
                     finding=f"No metric record found for {alert_metric}.",
                     supports="missing_model_performance_evidence",
                     confidence=0.30,
-                    metadata={"model_id": model_id, "metric": alert_metric},
+                    metadata={
+                        "model_id": model_id,
+                        "metric": alert_metric,
+                        "alert_id": alert_id,
+                        "model_version": model_version,
+                    },
                 )
             )
 

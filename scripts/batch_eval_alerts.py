@@ -12,7 +12,10 @@ def load_eval_cases(path: str) -> List[Dict[str, Any]]:
 
 
 def evaluate_case(case: Dict[str, Any], mode: str) -> Dict[str, Any]:
-    runner = PipelineRepairRunner(mode=mode)
+    runner = PipelineRepairRunner(
+    mode=mode,
+    simulate_incomplete_plan=bool(case.get("simulate_incomplete_plan", False)),
+)
 
     state, report = runner.run(case["alert_id"])
 

@@ -1,6 +1,8 @@
 [
   {
+    "alert_id": "ALERT-001",
     "model_id": "email_identification_model",
+    "model_version": "v42",
     "sample_id": "SAMPLE-001",
     "actual_label": "secure",
     "predicted_label": "rfp",
@@ -9,12 +11,36 @@
     "pattern": "new_secure_email_patterns"
   },
   {
+    "alert_id": "ALERT-001",
     "model_id": "email_identification_model",
+    "model_version": "v42",
     "sample_id": "SAMPLE-002",
     "actual_label": "secure",
     "predicted_label": "rfp",
     "error_type": "false_negative",
     "text": "Encrypted message available through protected delivery link.",
     "pattern": "new_secure_email_patterns"
+  },
+  {
+    "alert_id": "ALERT-002",
+    "model_id": "email_identification_model",
+    "model_version": "v43",
+    "sample_id": "SAMPLE-003",
+    "actual_label": "rfp",
+    "predicted_label": "secure",
+    "error_type": "false_positive",
+    "text": "Please review the attached proposal package and census details.",
+    "pattern": "post_deployment_false_positive"
+  },
+  {
+    "alert_id": "ALERT-002",
+    "model_id": "email_identification_model",
+    "model_version": "v43",
+    "sample_id": "SAMPLE-004",
+    "actual_label": "rfp",
+    "predicted_label": "secure",
+    "error_type": "false_positive",
+    "text": "Attached are the RFP documents and plan information for review.",
+    "pattern": "post_deployment_false_positive"
   }
 ]

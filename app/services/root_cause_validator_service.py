@@ -28,55 +28,116 @@ class RootCauseValidatorService:
                 "is_valid": False,
                 "feedback": ["Root cause is missing."],
                 "missing_evidence": ["root_cause_hypothesis"],
+                "evidence_supports": sorted(evidence_supports),
+                "confidence": 0.0,
             }
 
-        # Every valid incident root cause should have a confirmed performance drop.
-        if "model_performance_drop" not in evidence_supports:
-            missing_evidence.append("model_performance_drop")
-            feedback.append("Missing evidence confirming model-performance degradation.")
+        # Every valid incident root cause should have a confirmed performance drop,
+        # except explicit false-alarm style outcomes.
+        if root_cause.root_cause not in {"false_alarm", "inconclusive"}:
+            if "model_performance_drop" not in evidence_supports:
+                missing_evidence.append("model_performance_drop")
+                feedback.append(
+                    "Missing evidence confirming model-performance degradation."
+                )
 
-        # For new secure-email pattern root cause, require positive pattern evidence
-        # and exclusionary evidence for common competing causes.
-        if root_cause.root_cause == "new_secure_email_patterns":
-            required = {
-                "new_secure_email_patterns": "Missing prediction-error evidence for new secure-email patterns.",
-                "deployment_issue_excluded": "Missing deployment exclusion evidence.",
-                "schema_drift_excluded": "Missing schema-drift exclusion evidence.",
-                "data_quality_issue_excluded": "Missing data-quality exclusion evidence.",
-            }
+        required_by_root_cause = {
+            "new_secure_email_patterns": {
+                "new_secure_email_patterns": (
+                    "Missing prediction-error evidence for new secure-email patterns."
+                ),
+                "deployment_issue_excluded": (
+                    "Missing deployment exclusion evidence."
+                ),
+                "schema_drift_excluded": (
+                    "Missing schema-drift exclusion evidence."
+                ),
+                "data_quality_issue_excluded": (
+                    "Missing data-quality exclusion evidence."
+                ),
+            },
+            "bad_model_deployment": {
+                "bad_model_deployment_possible": (
+                    "Missing evidence that a recent deployment correlates with the alert."
+                ),
+                "schema_drift_excluded": (
+                    "Missing schema-drift exclusion evidence."
+                ),
+                "data_quality_issue_excluded": (
+                    "Missing data-quality exclusion evidence."
+                ),
+            },
+            "schema_drift": {
+                "schema_drift_detected": (
+                    "Missing positive schema-drift evidence."
+                ),
+                "deployment_issue_excluded": (
+                    "Missing deployment exclusion evidence."
+                ),
+                "data_quality_issue_excluded": (
+                    "Missing data-quality exclusion evidence."
+                ),
+            },
+            "data_quality_issue": {
+                "data_quality_issue_detected": (
+                    "Missing positive data-quality issue evidence."
+                ),
+                "deployment_issue_excluded": (
+                    "Missing deployment exclusion evidence."
+                ),
+                "schema_drift_excluded": (
+                    "Missing schema-drift exclusion evidence."
+                ),
+            },
+            "feature_drift": {
+                "feature_drift_detected": (
+                    "Missing positive feature-drift evidence."
+                ),
+                "deployment_issue_excluded": (
+                    "Missing deployment exclusion evidence."
+                ),
+                "schema_drift_excluded": (
+                    "Missing schema-drift exclusion evidence."
+                ),
+                "data_quality_issue_excluded": (
+                    "Missing data-quality exclusion evidence."
+                ),
+            },
+        }
 
-            for support_key, message in required.items():
-                if support_key not in evidence_supports:
-                    missing_evidence.append(support_key)
-                    feedback.append(message)
+        required = required_by_root_cause.get(root_cause.root_cause, {})
+
+        for support_key, message in required.items():
+            if support_key not in evidence_supports:
+                missing_evidence.append(support_key)
+                feedback.append(message)
 
         # If the root cause is inconclusive, inspect evidence gaps and request
         # follow-up diagnostics that could make the investigation conclusive.
         if root_cause.root_cause == "inconclusive":
-            if "deployment_issue_excluded" not in evidence_supports:
-                missing_evidence.append("deployment_issue_excluded")
-                feedback.append(
+            inconclusive_required = {
+                "deployment_issue_excluded": (
                     "Root cause is inconclusive because deployment exclusion evidence is missing."
-                )
-
-            if "schema_drift_excluded" not in evidence_supports:
-                missing_evidence.append("schema_drift_excluded")
-                feedback.append(
+                ),
+                "schema_drift_excluded": (
                     "Root cause is inconclusive because schema-drift exclusion evidence is missing."
-                )
-
-            if "data_quality_issue_excluded" not in evidence_supports:
-                missing_evidence.append("data_quality_issue_excluded")
-                feedback.append(
+                ),
+                "data_quality_issue_excluded": (
                     "Root cause is inconclusive because data-quality exclusion evidence is missing."
-                )
+                ),
+            }
 
-        is_valid = len(missing_evidence) == 0 and root_cause.confidence >= 0.7
+            for support_key, message in inconclusive_required.items():
+                if support_key not in evidence_supports:
+                    missing_evidence.append(support_key)
+                    feedback.append(message)
 
         if root_cause.confidence < 0.7:
             feedback.append(
                 f"Root-cause confidence {root_cause.confidence:.2f} is below threshold 0.70."
             )
+
+        is_valid = len(missing_evidence) == 0 and root_cause.confidence >= 0.7
 
         return {
             "is_valid": is_valid,

@@ -55,21 +55,47 @@ class PlanExecutorService:
 
         if step.action == "check_model_performance":
             alert_metric = state.alert.get("metric", "")
-            return self.model_performance_service.run(model_id, alert_metric)
+            return self.model_performance_service.run(
+                model_id=model_id,
+                alert_metric=alert_metric,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
+            
 
         if step.action == "check_feature_drift":
-            return self.feature_drift_service.run(model_id)
+            return self.feature_drift_service.run(
+                model_id=model_id,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
 
         if step.action == "analyze_prediction_errors":
-            return self.prediction_error_service.run(model_id)
+            return self.prediction_error_service.run(
+                model_id=model_id,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
 
         if step.action == "check_recent_deployments":
-            return self.deployment_service.run(model_id)
+            return self.deployment_service.run(
+                model_id=model_id,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
 
         if step.action == "check_schema_drift":
-            return self.schema_drift_service.run(model_id)
+            return self.schema_drift_service.run(
+                model_id=model_id,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
 
         if step.action == "check_data_quality":
-            return self.data_quality_service.run(model_id)
+            return self.data_quality_service.run(
+                model_id=model_id,
+                alert_id=state.alert_id,
+                model_version=state.alert.get("model_version"),
+            )
 
         raise ValueError(f"Unsupported diagnostic action: {step.action}")

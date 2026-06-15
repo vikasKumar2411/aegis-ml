@@ -15,5 +15,22 @@
       "owner": "ml-platform",
       "business_unit": "insurance"
     }
+  },
+  {
+  "alert_id": "ALERT-002",
+  "model_id": "email_identification_model",
+  "model_version": "v43",
+  "environment": "production",
+  "metric": "secure_email_precision",
+  "current_value": 0.81,
+  "baseline_value": 0.94,
+  "severity": "high",
+  "window_start": "2026-06-10T00:00:00Z",
+  "window_end": "2026-06-14T00:00:00Z",
+  "description": "Secure email precision dropped significantly after a recent model deployment.",
+  "metadata": {
+    "owner": "ml-platform",
+    "business_unit": "insurance"
   }
+}
 ]
