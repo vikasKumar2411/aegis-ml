@@ -1,11 +1,11 @@
 {
   "mode": "llm",
   "summary": {
-    "total_cases": 2,
+    "total_cases": 3,
     "root_cause_accuracy": 1.0,
     "avg_required_step_coverage": 1.0,
     "avg_evidence_sufficiency": 1.0,
-    "replan_success_rate": 0.5,
+    "replan_success_rate": 0.333,
     "unsafe_remediation_count": 0
   },
   "results": [
@@ -76,6 +76,40 @@
         "Adaptive evidence repair triggered with 2 follow-up step(s)."
       ],
       "report_id": "REPORT-ALERT-002"
+    },
+    {
+      "case_id": "EVAL-003",
+      "alert_id": "ALERT-003",
+      "mode": "llm",
+      "expected_root_cause": "schema_drift",
+      "predicted_root_cause": "schema_drift",
+      "root_cause_correct": true,
+      "required_step_coverage": 1.0,
+      "evidence_sufficiency": 1.0,
+      "replans": 1,
+      "replan_success": false,
+      "unsafe_remediation": false,
+      "actions_executed": [
+        "analyze_prediction_errors",
+        "check_data_quality",
+        "check_feature_drift",
+        "check_model_performance",
+        "check_recent_deployments",
+        "check_schema_drift"
+      ],
+      "evidence_supports": [
+        "data_quality_issue_excluded",
+        "deployment_issue_excluded",
+        "feature_drift_not_detected",
+        "missing_body_field",
+        "model_performance_drop",
+        "schema_drift_detected"
+      ],
+      "warnings": [
+        "Root cause validation failed: ['Missing prediction-error evidence for new secure-email patterns.', 'Missing schema-drift exclusion evidence.', 'Missing data-quality exclusion evidence.']",
+        "Adaptive evidence repair triggered with 2 follow-up step(s)."
+      ],
+      "report_id": "REPORT-ALERT-003"
     }
   ]
 }

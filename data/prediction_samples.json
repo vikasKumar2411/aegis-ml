@@ -42,5 +42,27 @@
     "error_type": "false_positive",
     "text": "Attached are the RFP documents and plan information for review.",
     "pattern": "post_deployment_false_positive"
-  }
+  },
+  {
+  "alert_id": "ALERT-003",
+  "model_id": "email_identification_model",
+  "model_version": "v44",
+  "sample_id": "SAMPLE-005",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "",
+  "pattern": "missing_body_field"
+},
+{
+  "alert_id": "ALERT-003",
+  "model_id": "email_identification_model",
+  "model_version": "v44",
+  "sample_id": "SAMPLE-006",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "",
+  "pattern": "missing_body_field"
+}
 ]

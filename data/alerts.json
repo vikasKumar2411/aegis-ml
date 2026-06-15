@@ -32,5 +32,22 @@
     "owner": "ml-platform",
     "business_unit": "insurance"
   }
+},
+{
+  "alert_id": "ALERT-003",
+  "model_id": "email_identification_model",
+  "model_version": "v44",
+  "environment": "production",
+  "metric": "secure_email_recall",
+  "current_value": 0.74,
+  "baseline_value": 0.90,
+  "severity": "high",
+  "window_start": "2026-06-15T00:00:00Z",
+  "window_end": "2026-06-18T00:00:00Z",
+  "description": "Secure email recall dropped after an upstream input schema change.",
+  "metadata": {
+    "owner": "ml-platform",
+    "business_unit": "insurance"
+  }
 }
 ]

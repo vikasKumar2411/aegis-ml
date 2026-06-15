@@ -18,5 +18,15 @@
     "change_type": "model_deployment",
     "status": "success",
     "correlates_with_alert": true
-  }
+  },
+  {
+  "alert_id": "ALERT-003",
+  "model_id": "email_identification_model",
+  "deployment_id": "DEPLOY-102",
+  "model_version": "v44",
+  "deployed_at": "2026-06-01T09:00:00Z",
+  "change_type": "routine_model_refresh",
+  "status": "success",
+  "correlates_with_alert": false
+}
 ]

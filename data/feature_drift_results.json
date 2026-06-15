@@ -28,5 +28,15 @@
     "threshold": 0.2,
     "is_drifted": false,
     "summary": "No significant feature drift detected during the alert window."
-  }
+  },
+  {
+  "alert_id": "ALERT-003",
+  "model_id": "email_identification_model",
+  "model_version": "v44",
+  "feature_name": "secure_phrase_count",
+  "drift_score": 0.08,
+  "threshold": 0.2,
+  "is_drifted": false,
+  "summary": "No significant feature distribution drift detected after scoping to valid fields."
+}
 ]

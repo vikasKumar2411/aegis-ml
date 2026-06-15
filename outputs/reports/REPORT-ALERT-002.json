@@ -39,20 +39,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
+      "target": "secure_email_precision",
       "reason": "Identify specific errors contributing to the drop in precision."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input data features",
-      "reason": "Assess if input distribution changes are affecting model performance."
+      "target": "email_identification_model input features",
+      "reason": "Assess if recent changes in input data distribution affect model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues impacting the model."
+      "reason": "Rule out any deployment-related issues impacting the model."
     }
   ],
   "final_plan": [
@@ -65,20 +65,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
+      "target": "secure_email_precision",
       "reason": "Identify specific errors contributing to the drop in precision."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input data features",
-      "reason": "Assess if input distribution changes are affecting model performance."
+      "target": "email_identification_model input features",
+      "reason": "Assess if recent changes in input data distribution affect model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues impacting the model."
+      "reason": "Rule out any deployment-related issues impacting the model."
     },
     {
       "step_id": 5,
@@ -103,20 +103,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
+      "target": "secure_email_precision",
       "reason": "Identify specific errors contributing to the drop in precision."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input data features",
-      "reason": "Assess if input distribution changes are affecting model performance."
+      "target": "email_identification_model input features",
+      "reason": "Assess if recent changes in input data distribution affect model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues impacting the model."
+      "reason": "Rule out any deployment-related issues impacting the model."
     },
     {
       "step_id": 5,
@@ -147,20 +147,20 @@
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_precision issues",
+        "target": "secure_email_precision",
         "reason": "Identify specific errors contributing to the drop in precision."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
-        "target": "input data features",
-        "reason": "Assess if input distribution changes are affecting model performance."
+        "target": "email_identification_model input features",
+        "reason": "Assess if recent changes in input data distribution affect model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
         "target": "production environment",
-        "reason": "Rule out any recent deployment issues impacting the model."
+        "reason": "Rule out any deployment-related issues impacting the model."
       }
     ],
     "approved_step_count": 4,
@@ -340,16 +340,11 @@
   "root_cause": {
     "root_cause": "bad_model_deployment",
     "confidence": 0.8,
-    "summary": "The drop in secure_email_precision is correlated with a model deployment, suggesting the new version might contain issues.",
+    "summary": "The drop in secure_email_precision is likely due to a correlated model deployment, as evidenced by the correlation with the alert window.",
     "alternative_causes": [
       {
-        "cause": "new_secure_email_patterns",
-        "confidence": 0.15,
-        "reason": "While there are false positives, the specific pattern 'post_deployment_false_positive' does not strongly indicate a change in email patterns."
-      },
-      {
         "cause": "feature_drift",
-        "confidence": 0.05,
+        "confidence": 0.2,
         "reason": "No significant feature drift was detected during the alert window."
       }
     ],
