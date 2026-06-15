@@ -73,6 +73,24 @@ class RemediationService:
                 ],
             )
 
+        if root_cause.root_cause == "feature_drift":
+            return RemediationRecommendation(
+                recommended_action="retrain_or_recalibrate_for_feature_drift",
+                priority="high",
+                human_approval_required=True,
+                reason=(
+                    "Feature drift was validated as the root cause with model-performance "
+                    "degradation while deployment, schema, and data-quality causes were excluded."
+                ),
+                actions=[
+                    "Create a drift-focused validation slice for shifted features such as email_body_length and attachment_to_text_ratio.",
+                    "Retrain or recalibrate the model using recent production examples from the shifted traffic window.",
+                    "Evaluate recall, precision, and calibration on both baseline and drifted traffic before release.",
+                    "Deploy only after human approval with staged rollout and post-deployment monitoring.",
+                    "Keep feature-drift monitoring active for the affected features after release.",
+                ],
+            )
+
         if root_cause.root_cause == "false_alarm":
             return RemediationRecommendation(
                 recommended_action="continue_monitoring_no_action_required",

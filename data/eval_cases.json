@@ -1,108 +1,175 @@
 [
-  {
-    "case_id": "EVAL-001",
-    "alert_id": "ALERT-001",
-    "expected_root_cause": "new_secure_email_patterns",
-    "required_actions": [
-      "check_model_performance",
-      "analyze_prediction_errors",
-      "check_feature_drift",
-      "check_recent_deployments",
-      "check_schema_drift",
-      "check_data_quality"
-    ],
-    "required_evidence": [
-      "model_performance_drop",
-      "new_secure_email_patterns",
-      "deployment_issue_excluded",
-      "schema_drift_excluded",
-      "data_quality_issue_excluded"
-    ],
-    "replan_expected": true,
-    "description": "Secure email recall drop caused by new secure email language patterns."
-  },
-  {
-  "case_id": "EVAL-002",
-  "alert_id": "ALERT-002",
-  "expected_root_cause": "bad_model_deployment",
+{
+"case_id": "EVAL-001",
+"alert_id": "ALERT-001",
+"expected_root_cause": "new_secure_email_patterns",
+"eval_type": "normal",
+"simulate_incomplete_plan": false,
+"repair_expected": false,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_feature_drift",
+"check_recent_deployments",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"model_performance_drop",
+"new_secure_email_patterns",
+"deployment_issue_excluded",
+"schema_drift_excluded",
+"data_quality_issue_excluded"
+],
+"description": "Secure email recall drop caused by new secure email language patterns."
+},
+{
+"case_id": "EVAL-002",
+"alert_id": "ALERT-002",
+"expected_root_cause": "bad_model_deployment",
+"eval_type": "normal",
+"simulate_incomplete_plan": false,
+"repair_expected": false,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_recent_deployments",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"model_performance_drop",
+"bad_model_deployment_possible",
+"schema_drift_excluded",
+"data_quality_issue_excluded"
+],
+"description": "Precision degradation caused by a recent correlated model deployment."
+},
+{
+"case_id": "EVAL-003",
+"alert_id": "ALERT-003",
+"expected_root_cause": "schema_drift",
+"eval_type": "normal",
+"simulate_incomplete_plan": false,
+"repair_expected": false,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_recent_deployments",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"model_performance_drop",
+"schema_drift_detected",
+"deployment_issue_excluded",
+"data_quality_issue_excluded"
+],
+"description": "Recall degradation caused by upstream schema drift where expected body field was replaced by message_body."
+},
+{
+"case_id": "EVAL-004",
+"alert_id": "ALERT-004",
+"expected_root_cause": "data_quality_issue",
+"eval_type": "normal",
+"simulate_incomplete_plan": false,
+"repair_expected": false,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_recent_deployments",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"model_performance_drop",
+"data_quality_issue_detected",
+"deployment_issue_excluded",
+"schema_drift_excluded"
+],
+"description": "Recall degradation caused by upstream data-quality issue with elevated null body rate."
+},
+{
+"case_id": "EVAL-005",
+"alert_id": "ALERT-005",
+"expected_root_cause": "false_alarm",
+"eval_type": "normal",
+"simulate_incomplete_plan": false,
+"repair_expected": false,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_recent_deployments",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"no_significant_model_performance_drop",
+"deployment_issue_excluded",
+"schema_drift_excluded",
+"data_quality_issue_excluded"
+],
+"description": "Low-severity alert where metric movement is not statistically significant and no operational cause is found."
+},
+{
+  "case_id": "EVAL-006",
+  "alert_id": "ALERT-006",
+  "expected_root_cause": "feature_drift",
+  "eval_type": "normal",
+  "simulate_incomplete_plan": false,
+  "repair_expected": false,
   "required_actions": [
     "check_model_performance",
     "analyze_prediction_errors",
+    "check_feature_drift",
     "check_recent_deployments",
     "check_schema_drift",
     "check_data_quality"
   ],
   "required_evidence": [
     "model_performance_drop",
-    "bad_model_deployment_possible",
+    "feature_drift_detected",
+    "deployment_issue_excluded",
     "schema_drift_excluded",
     "data_quality_issue_excluded"
   ],
-  "simulate_incomplete_plan": false,
-  "replan_expected": false,
-  "description": "Precision degradation caused by a recent correlated model deployment."
+  "description": "Secure email recall degradation caused by feature distribution shift rather than deployment, schema, or upstream data-quality issues."
 },
 {
-  "case_id": "EVAL-003",
-  "alert_id": "ALERT-003",
-  "expected_root_cause": "schema_drift",
-  "required_actions": [
-    "check_model_performance",
-    "analyze_prediction_errors",
-    "check_recent_deployments",
-    "check_schema_drift",
-    "check_data_quality"
-  ],
-  "required_evidence": [
-    "model_performance_drop",
-    "schema_drift_detected",
-    "deployment_issue_excluded",
-    "data_quality_issue_excluded"
-  ],
-  "simulate_incomplete_plan": false,
-  "replan_expected": false,
-  "description": "Recall degradation caused by upstream schema drift where expected body field was replaced by message_body."
+"case_id": "EVAL-005-STRESS",
+"alert_id": "ALERT-005",
+"expected_root_cause": "false_alarm",
+"eval_type": "repair_stress_test",
+"simulate_incomplete_plan": true,
+"repair_expected": true,
+"required_actions": [
+"check_model_performance",
+"check_schema_drift",
+"check_data_quality"
+],
+"required_evidence": [
+"no_significant_model_performance_drop",
+"schema_drift_excluded",
+"data_quality_issue_excluded"
+],
+"description": "Repair stress test where the initial plan is intentionally incomplete and the validator should force missing schema/data-quality diagnostics."
 },
 {
-  "case_id": "EVAL-004",
-  "alert_id": "ALERT-004",
-  "expected_root_cause": "data_quality_issue",
-  "required_actions": [
-    "check_model_performance",
-    "analyze_prediction_errors",
-    "check_recent_deployments",
-    "check_schema_drift",
-    "check_data_quality"
-  ],
-  "required_evidence": [
-    "model_performance_drop",
-    "data_quality_issue_detected",
-    "deployment_issue_excluded",
-    "schema_drift_excluded"
-  ],
-  "simulate_incomplete_plan": false,
-  "replan_expected": false,
-  "description": "Recall degradation caused by upstream data-quality issue with elevated null body rate."
-},
-{
-  "case_id": "EVAL-005",
-  "alert_id": "ALERT-005",
-  "expected_root_cause": "false_alarm",
-  "required_actions": [
-    "check_model_performance",
-    "analyze_prediction_errors",
-    "check_recent_deployments",
-    "check_schema_drift",
-    "check_data_quality"
-  ],
-  "required_evidence": [
-    "no_significant_model_performance_drop",
-    "deployment_issue_excluded",
-    "schema_drift_excluded",
-    "data_quality_issue_excluded"
-  ],
-  "simulate_incomplete_plan": false,
-  "replan_expected": false,
-  "description": "Low-severity alert where metric movement is not statistically significant and no operational cause is found."
+"case_id": "EVAL-004-STRESS",
+"alert_id": "ALERT-004",
+"expected_root_cause": "data_quality_issue",
+"eval_type": "repair_stress_test",
+"simulate_incomplete_plan": true,
+"repair_expected": true,
+"required_actions": [
+"check_model_performance",
+"analyze_prediction_errors",
+"check_data_quality"
+],
+"required_evidence": [
+"model_performance_drop",
+"data_quality_issue_detected"
+],
+"description": "Repair stress test where the LLM may infer data-quality issue indirectly, but the validator should require explicit data-quality evidence."
 }
 ]

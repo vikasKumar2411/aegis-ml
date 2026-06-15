@@ -97,5 +97,27 @@
   "error_type": "correct",
   "text": "Secure portal message correctly classified.",
   "pattern": "no_error_pattern"
+},
+{
+  "alert_id": "ALERT-006",
+  "model_id": "email_identification_model",
+  "model_version": "v47",
+  "sample_id": "SAMPLE-010",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "Broker portal package attached for review.",
+  "pattern": "feature_distribution_shift"
+},
+{
+  "alert_id": "ALERT-006",
+  "model_id": "email_identification_model",
+  "model_version": "v47",
+  "sample_id": "SAMPLE-011",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "Submission package available in attachment. Please review.",
+  "pattern": "feature_distribution_shift"
 }
 ]

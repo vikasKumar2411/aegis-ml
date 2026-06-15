@@ -1,20 +1,20 @@
 {
-  "report_id": "REPORT-ALERT-001",
-  "alert_id": "ALERT-001",
+  "report_id": "REPORT-ALERT-006",
+  "alert_id": "ALERT-006",
   "status": "completed",
-  "executive_summary": "AegisML investigated ALERT-001, a high production ML alert on secure_email_recall. The final root cause is new_secure_email_patterns with confidence 0.95. Remediation requires human approval before production changes.",
+  "executive_summary": "AegisML investigated ALERT-006, a high production ML alert on secure_email_recall. The final root cause is feature_drift with confidence 0.85. Remediation requires human approval before production changes.",
   "alert_context": {
-    "alert_id": "ALERT-001",
+    "alert_id": "ALERT-006",
     "model_id": "email_identification_model",
-    "model_version": "v42",
+    "model_version": "v47",
     "environment": "production",
     "metric": "secure_email_recall",
-    "current_value": 0.78,
-    "baseline_value": 0.91,
+    "current_value": 0.71,
+    "baseline_value": 0.84,
     "severity": "high",
-    "window_start": "2026-06-01T00:00:00Z",
-    "window_end": "2026-06-14T00:00:00Z",
-    "description": "Secure email recall dropped significantly in production.",
+    "window_start": "2026-06-26T00:00:00Z",
+    "window_end": "2026-06-29T00:00:00Z",
+    "description": "Secure email recall dropped due to a feature distribution shift in inbound email traffic. No correlated deployment, schema drift, or upstream data-quality degradation is present.",
     "metadata": {
       "owner": "ml-platform",
       "business_unit": "insurance"
@@ -34,32 +34,32 @@
       {
         "step_id": 1,
         "action": "check_model_performance",
-        "target": "email_identification_model_v42",
-        "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+        "target": "email_identification_model_v47",
+        "reason": "Initial check to verify overall model performance metrics have degraded."
       },
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_classification",
-        "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+        "target": "secure_email_recall",
+        "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
       },
       {
         "step_id": 3,
         "action": "check_recent_deployments",
-        "target": "email_identification_model_v42",
-        "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+        "target": "email_identification_model_v47",
+        "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
       },
       {
         "step_id": 4,
         "action": "check_schema_drift",
-        "target": "input_data_schema",
-        "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+        "target": "inbound_email_traffic",
+        "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
       },
       {
         "step_id": 5,
         "action": "check_feature_drift",
-        "target": "email_features",
-        "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+        "target": "email_identification_model_v47",
+        "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
       },
       {
         "step_id": 6,
@@ -72,32 +72,32 @@
       {
         "step_id": 1,
         "action": "check_model_performance",
-        "target": "email_identification_model_v42",
-        "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+        "target": "email_identification_model_v47",
+        "reason": "Initial check to verify overall model performance metrics have degraded."
       },
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_classification",
-        "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+        "target": "secure_email_recall",
+        "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
       },
       {
         "step_id": 3,
         "action": "check_recent_deployments",
-        "target": "email_identification_model_v42",
-        "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+        "target": "email_identification_model_v47",
+        "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
       },
       {
         "step_id": 4,
         "action": "check_schema_drift",
-        "target": "input_data_schema",
-        "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+        "target": "inbound_email_traffic",
+        "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
       },
       {
         "step_id": 5,
         "action": "check_feature_drift",
-        "target": "email_features",
-        "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+        "target": "email_identification_model_v47",
+        "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
       },
       {
         "step_id": 6,
@@ -116,32 +116,32 @@
         {
           "step_id": 1,
           "action": "check_model_performance",
-          "target": "email_identification_model_v42",
-          "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+          "target": "email_identification_model_v47",
+          "reason": "Initial check to verify overall model performance metrics have degraded."
         },
         {
           "step_id": 2,
           "action": "analyze_prediction_errors",
-          "target": "secure_email_classification",
-          "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+          "target": "secure_email_recall",
+          "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
         },
         {
           "step_id": 3,
           "action": "check_recent_deployments",
-          "target": "email_identification_model_v42",
-          "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+          "target": "email_identification_model_v47",
+          "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
         },
         {
           "step_id": 4,
           "action": "check_schema_drift",
-          "target": "input_data_schema",
-          "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+          "target": "inbound_email_traffic",
+          "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
         },
         {
           "step_id": 5,
           "action": "check_feature_drift",
-          "target": "email_features",
-          "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+          "target": "email_identification_model_v47",
+          "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
         },
         {
           "step_id": 6,
@@ -160,54 +160,56 @@
       "evidence_id": 1,
       "source": "model_performance_service",
       "supports": "model_performance_drop",
-      "summary": "secure_email_recall dropped from 0.91 to 0.78, a decline of 0.13.",
+      "summary": "secure_email_recall dropped from 0.84 to 0.71, a decline of 0.13.",
       "details": {
-        "alert_id": "ALERT-001",
+        "alert_id": "ALERT-006",
         "model_id": "email_identification_model",
-        "model_version": "v42",
+        "model_version": "v47",
         "metric": "secure_email_recall",
-        "baseline_value": 0.91,
-        "current_value": 0.78,
+        "baseline_value": 0.84,
+        "current_value": 0.71,
         "drop": 0.13,
-        "is_significant": true
+        "is_significant": true,
+        "window_start": "2026-06-26T00:00:00Z",
+        "window_end": "2026-06-29T00:00:00Z"
       }
     },
     {
       "evidence_id": 2,
       "source": "prediction_error_service",
-      "supports": "new_secure_email_patterns",
-      "summary": "2 false-negative samples share dominant pattern: new_secure_email_patterns.",
+      "supports": "feature_distribution_shift",
+      "summary": "2 false-negative samples share dominant pattern: feature_distribution_shift.",
       "details": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "false_negative_count": 2,
         "false_positive_count": 0,
         "pattern_counts": {
-          "new_secure_email_patterns": 2
+          "feature_distribution_shift": 2
         },
         "samples": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "sample_id": "SAMPLE-001",
+            "model_version": "v47",
+            "sample_id": "SAMPLE-010",
             "actual_label": "secure",
             "predicted_label": "rfp",
             "error_type": "false_negative",
-            "text": "Please access the secure portal to retrieve the confidential proposal package.",
-            "pattern": "new_secure_email_patterns"
+            "text": "Broker portal package attached for review.",
+            "pattern": "feature_distribution_shift"
           },
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "sample_id": "SAMPLE-002",
+            "model_version": "v47",
+            "sample_id": "SAMPLE-011",
             "actual_label": "secure",
             "predicted_label": "rfp",
             "error_type": "false_negative",
-            "text": "Encrypted message available through protected delivery link.",
-            "pattern": "new_secure_email_patterns"
+            "text": "Submission package available in attachment. Please review.",
+            "pattern": "feature_distribution_shift"
           }
         ]
       }
@@ -219,16 +221,16 @@
       "summary": "No deployment event appears correlated with the alert window.",
       "details": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "deployments_checked": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "deployment_id": "DEPLOY-100",
-            "model_version": "v42",
-            "deployed_at": "2026-05-15T10:00:00Z",
-            "change_type": "model_refresh",
+            "deployment_id": "DEPLOY-105",
+            "model_version": "v47",
+            "deployed_at": "2026-06-05T09:00:00Z",
+            "change_type": "routine_model_refresh",
             "status": "success",
             "correlates_with_alert": false
           }
@@ -241,9 +243,9 @@
       "supports": "schema_drift_excluded",
       "summary": "No schema drift detected; expected and observed fields match.",
       "details": {
-        "alert_id": "ALERT-001",
+        "alert_id": "ALERT-006",
         "model_id": "email_identification_model",
-        "model_version": "v42",
+        "model_version": "v47",
         "schema_version": "schema-v12",
         "expected_fields": [
           "subject",
@@ -266,21 +268,31 @@
       "evidence_id": 5,
       "source": "feature_drift_service",
       "supports": "feature_drift_detected",
-      "summary": "Feature drift detected in: secure_phrase_count.",
+      "summary": "Feature drift detected in: email_body_length, attachment_to_text_ratio.",
       "details": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "drifted_features": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "feature_name": "secure_phrase_count",
-            "drift_score": 0.41,
+            "model_version": "v47",
+            "feature_name": "email_body_length",
+            "drift_score": 0.42,
             "threshold": 0.2,
             "is_drifted": true,
-            "summary": "Increase in new secure email phrasing not seen in training data."
+            "summary": "Inbound secure-email messages became materially shorter than the training baseline, changing the input distribution seen by the model."
+          },
+          {
+            "alert_id": "ALERT-006",
+            "model_id": "email_identification_model",
+            "model_version": "v47",
+            "feature_name": "attachment_to_text_ratio",
+            "drift_score": 0.38,
+            "threshold": 0.2,
+            "is_drifted": true,
+            "summary": "Current secure-email traffic has a higher attachment-to-text ratio, causing distribution shift without schema or data-quality degradation."
           }
         ]
       }
@@ -292,24 +304,24 @@
       "summary": "No data-quality issues detected in monitored checks.",
       "details": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "checks": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
+            "model_version": "v47",
             "check_name": "null_body_rate",
-            "current_value": 0.02,
+            "current_value": 0.018,
             "baseline_value": 0.02,
             "is_issue": false
           },
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
+            "model_version": "v47",
             "check_name": "duplicate_email_rate",
-            "current_value": 0.01,
+            "current_value": 0.012,
             "baseline_value": 0.01,
             "is_issue": false
           }
@@ -327,12 +339,12 @@
       "evidence_supports": [
         "data_quality_issue_excluded",
         "deployment_issue_excluded",
+        "feature_distribution_shift",
         "feature_drift_detected",
         "model_performance_drop",
-        "new_secure_email_patterns",
         "schema_drift_excluded"
       ],
-      "confidence": 0.95
+      "confidence": 0.85
     },
     "validation_failures": []
   },
@@ -342,14 +354,14 @@
     "warnings": []
   },
   "root_cause": {
-    "root_cause": "new_secure_email_patterns",
-    "confidence": 0.95,
-    "summary": "The drop in secure email recall is directly correlated with the presence of new secure email patterns in false-negative samples.",
+    "root_cause": "feature_drift",
+    "confidence": 0.85,
+    "summary": "The feature drift in email_body_length and attachment_to_text_ratio caused a decline in secure_email_recall, leading to false negatives.",
     "alternative_causes": [
       {
-        "cause": "feature_drift",
-        "confidence": 0.85,
-        "reason": "Feature drift was detected, but it did not significantly impact model performance."
+        "cause": "false_alarm",
+        "confidence": 0.1,
+        "reason": "No significant model performance drop was observed, and other common causes were excluded."
       }
     ],
     "metadata": {
@@ -362,22 +374,22 @@
   },
   "alternatives_considered": [
     {
-      "cause": "feature_drift",
-      "confidence": 0.85,
-      "reason": "Feature drift was detected, but it did not significantly impact model performance."
+      "cause": "false_alarm",
+      "confidence": 0.1,
+      "reason": "No significant model performance drop was observed, and other common causes were excluded."
     }
   ],
   "remediation": {
-    "recommended_action": "retrain_model_with_recent_secure_email_examples",
+    "recommended_action": "retrain_or_recalibrate_for_feature_drift",
     "priority": "high",
     "human_approval_required": true,
-    "reason": "False negatives show new secure-email phrasing that the current model does not recognize reliably.",
+    "reason": "Feature drift was validated as the root cause with model-performance degradation while deployment, schema, and data-quality causes were excluded.",
     "actions": [
-      "Add recent false-negative secure email examples to the labeling queue.",
-      "Retrain the email identification model with updated secure-email patterns.",
-      "Run regression evaluation against existing RFP and secure-email test sets.",
-      "Add monitoring for secure phrase drift and false-negative rate.",
-      "Require human approval before production deployment."
+      "Create a drift-focused validation slice for shifted features such as email_body_length and attachment_to_text_ratio.",
+      "Retrain or recalibrate the model using recent production examples from the shifted traffic window.",
+      "Evaluate recall, precision, and calibration on both baseline and drifted traffic before release.",
+      "Deploy only after human approval with staged rollout and post-deployment monitoring.",
+      "Keep feature-drift monitoring active for the affected features after release."
     ]
   },
   "safety_notes": [
@@ -388,19 +400,19 @@
   ],
   "errors": [],
   "model_id": "email_identification_model",
-  "goal": "Investigate production ML alert ALERT-001 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
+  "goal": "Investigate production ML alert ALERT-006 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
   "alert": {
-    "alert_id": "ALERT-001",
+    "alert_id": "ALERT-006",
     "model_id": "email_identification_model",
-    "model_version": "v42",
+    "model_version": "v47",
     "environment": "production",
     "metric": "secure_email_recall",
-    "current_value": 0.78,
-    "baseline_value": 0.91,
+    "current_value": 0.71,
+    "baseline_value": 0.84,
     "severity": "high",
-    "window_start": "2026-06-01T00:00:00Z",
-    "window_end": "2026-06-14T00:00:00Z",
-    "description": "Secure email recall dropped significantly in production.",
+    "window_start": "2026-06-26T00:00:00Z",
+    "window_end": "2026-06-29T00:00:00Z",
+    "description": "Secure email recall dropped due to a feature distribution shift in inbound email traffic. No correlated deployment, schema drift, or upstream data-quality degradation is present.",
     "metadata": {
       "owner": "ml-platform",
       "business_unit": "insurance"
@@ -411,32 +423,32 @@
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model_v42",
-      "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+      "target": "email_identification_model_v47",
+      "reason": "Initial check to verify overall model performance metrics have degraded."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_classification",
-      "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+      "target": "secure_email_recall",
+      "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
     },
     {
       "step_id": 3,
       "action": "check_recent_deployments",
-      "target": "email_identification_model_v42",
-      "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+      "target": "email_identification_model_v47",
+      "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
     },
     {
       "step_id": 4,
       "action": "check_schema_drift",
-      "target": "input_data_schema",
-      "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+      "target": "inbound_email_traffic",
+      "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
     },
     {
       "step_id": 5,
       "action": "check_feature_drift",
-      "target": "email_features",
-      "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+      "target": "email_identification_model_v47",
+      "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
     },
     {
       "step_id": 6,
@@ -449,32 +461,32 @@
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model_v42",
-      "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+      "target": "email_identification_model_v47",
+      "reason": "Initial check to verify overall model performance metrics have degraded."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_classification",
-      "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+      "target": "secure_email_recall",
+      "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
     },
     {
       "step_id": 3,
       "action": "check_recent_deployments",
-      "target": "email_identification_model_v42",
-      "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+      "target": "email_identification_model_v47",
+      "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
     },
     {
       "step_id": 4,
       "action": "check_schema_drift",
-      "target": "input_data_schema",
-      "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+      "target": "inbound_email_traffic",
+      "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
     },
     {
       "step_id": 5,
       "action": "check_feature_drift",
-      "target": "email_features",
-      "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+      "target": "email_identification_model_v47",
+      "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
     },
     {
       "step_id": 6,
@@ -487,32 +499,32 @@
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model_v42",
-      "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+      "target": "email_identification_model_v47",
+      "reason": "Initial check to verify overall model performance metrics have degraded."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_classification",
-      "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+      "target": "secure_email_recall",
+      "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
     },
     {
       "step_id": 3,
       "action": "check_recent_deployments",
-      "target": "email_identification_model_v42",
-      "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+      "target": "email_identification_model_v47",
+      "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
     },
     {
       "step_id": 4,
       "action": "check_schema_drift",
-      "target": "input_data_schema",
-      "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+      "target": "inbound_email_traffic",
+      "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
     },
     {
       "step_id": 5,
       "action": "check_feature_drift",
-      "target": "email_features",
-      "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+      "target": "email_identification_model_v47",
+      "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
     },
     {
       "step_id": 6,
@@ -531,32 +543,32 @@
       {
         "step_id": 1,
         "action": "check_model_performance",
-        "target": "email_identification_model_v42",
-        "reason": "Ruling out model performance degradation as the cause of the drop in secure_email_recall."
+        "target": "email_identification_model_v47",
+        "reason": "Initial check to verify overall model performance metrics have degraded."
       },
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_classification",
-        "reason": "Identifying specific types of prediction errors that may be contributing to the decrease in recall."
+        "target": "secure_email_recall",
+        "reason": "Analyze specific prediction errors related to secure email recall to identify any patterns or anomalies."
       },
       {
         "step_id": 3,
         "action": "check_recent_deployments",
-        "target": "email_identification_model_v42",
-        "reason": "Verifying if any recent deployments introduced regressions affecting model performance."
+        "target": "email_identification_model_v47",
+        "reason": "Rule out deployment-related issues that could have caused the drop in secure email recall."
       },
       {
         "step_id": 4,
         "action": "check_schema_drift",
-        "target": "input_data_schema",
-        "reason": "Ensuring that the input data schema has not changed, which could affect model predictions."
+        "target": "inbound_email_traffic",
+        "reason": "Check for any changes in the schema of inbound email traffic that might affect model performance."
       },
       {
         "step_id": 5,
         "action": "check_feature_drift",
-        "target": "email_features",
-        "reason": "Checking for shifts in feature distribution that might explain changes in model behavior and metric performance."
+        "target": "email_identification_model_v47",
+        "reason": "Investigate if there has been a shift in feature distribution that could explain the drop in secure email recall."
       },
       {
         "step_id": 6,
@@ -573,57 +585,59 @@
     {
       "evidence_id": "EVID-email_identification_model-secure_email_recall",
       "source": "model_performance_service",
-      "finding": "secure_email_recall dropped from 0.91 to 0.78, a decline of 0.13.",
+      "finding": "secure_email_recall dropped from 0.84 to 0.71, a decline of 0.13.",
       "supports": "model_performance_drop",
       "confidence": 0.95,
       "metadata": {
-        "alert_id": "ALERT-001",
+        "alert_id": "ALERT-006",
         "model_id": "email_identification_model",
-        "model_version": "v42",
+        "model_version": "v47",
         "metric": "secure_email_recall",
-        "baseline_value": 0.91,
-        "current_value": 0.78,
+        "baseline_value": 0.84,
+        "current_value": 0.71,
         "drop": 0.13,
-        "is_significant": true
+        "is_significant": true,
+        "window_start": "2026-06-26T00:00:00Z",
+        "window_end": "2026-06-29T00:00:00Z"
       }
     },
     {
       "evidence_id": "EVID-email_identification_model-prediction-errors",
       "source": "prediction_error_service",
-      "finding": "2 false-negative samples share dominant pattern: new_secure_email_patterns.",
-      "supports": "new_secure_email_patterns",
+      "finding": "2 false-negative samples share dominant pattern: feature_distribution_shift.",
+      "supports": "feature_distribution_shift",
       "confidence": 0.9,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "false_negative_count": 2,
         "false_positive_count": 0,
         "pattern_counts": {
-          "new_secure_email_patterns": 2
+          "feature_distribution_shift": 2
         },
         "samples": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "sample_id": "SAMPLE-001",
+            "model_version": "v47",
+            "sample_id": "SAMPLE-010",
             "actual_label": "secure",
             "predicted_label": "rfp",
             "error_type": "false_negative",
-            "text": "Please access the secure portal to retrieve the confidential proposal package.",
-            "pattern": "new_secure_email_patterns"
+            "text": "Broker portal package attached for review.",
+            "pattern": "feature_distribution_shift"
           },
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "sample_id": "SAMPLE-002",
+            "model_version": "v47",
+            "sample_id": "SAMPLE-011",
             "actual_label": "secure",
             "predicted_label": "rfp",
             "error_type": "false_negative",
-            "text": "Encrypted message available through protected delivery link.",
-            "pattern": "new_secure_email_patterns"
+            "text": "Submission package available in attachment. Please review.",
+            "pattern": "feature_distribution_shift"
           }
         ]
       }
@@ -636,16 +650,16 @@
       "confidence": 0.85,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "deployments_checked": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "deployment_id": "DEPLOY-100",
-            "model_version": "v42",
-            "deployed_at": "2026-05-15T10:00:00Z",
-            "change_type": "model_refresh",
+            "deployment_id": "DEPLOY-105",
+            "model_version": "v47",
+            "deployed_at": "2026-06-05T09:00:00Z",
+            "change_type": "routine_model_refresh",
             "status": "success",
             "correlates_with_alert": false
           }
@@ -659,9 +673,9 @@
       "supports": "schema_drift_excluded",
       "confidence": 0.85,
       "metadata": {
-        "alert_id": "ALERT-001",
+        "alert_id": "ALERT-006",
         "model_id": "email_identification_model",
-        "model_version": "v42",
+        "model_version": "v47",
         "schema_version": "schema-v12",
         "expected_fields": [
           "subject",
@@ -683,23 +697,33 @@
     {
       "evidence_id": "EVID-email_identification_model-feature-drift",
       "source": "feature_drift_service",
-      "finding": "Feature drift detected in: secure_phrase_count.",
+      "finding": "Feature drift detected in: email_body_length, attachment_to_text_ratio.",
       "supports": "feature_drift_detected",
       "confidence": 0.85,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "drifted_features": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
-            "feature_name": "secure_phrase_count",
-            "drift_score": 0.41,
+            "model_version": "v47",
+            "feature_name": "email_body_length",
+            "drift_score": 0.42,
             "threshold": 0.2,
             "is_drifted": true,
-            "summary": "Increase in new secure email phrasing not seen in training data."
+            "summary": "Inbound secure-email messages became materially shorter than the training baseline, changing the input distribution seen by the model."
+          },
+          {
+            "alert_id": "ALERT-006",
+            "model_id": "email_identification_model",
+            "model_version": "v47",
+            "feature_name": "attachment_to_text_ratio",
+            "drift_score": 0.38,
+            "threshold": 0.2,
+            "is_drifted": true,
+            "summary": "Current secure-email traffic has a higher attachment-to-text ratio, causing distribution shift without schema or data-quality degradation."
           }
         ]
       }
@@ -712,24 +736,24 @@
       "confidence": 0.8,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-001",
-        "model_version": "v42",
+        "alert_id": "ALERT-006",
+        "model_version": "v47",
         "checks": [
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
+            "model_version": "v47",
             "check_name": "null_body_rate",
-            "current_value": 0.02,
+            "current_value": 0.018,
             "baseline_value": 0.02,
             "is_issue": false
           },
           {
-            "alert_id": "ALERT-001",
+            "alert_id": "ALERT-006",
             "model_id": "email_identification_model",
-            "model_version": "v42",
+            "model_version": "v47",
             "check_name": "duplicate_email_rate",
-            "current_value": 0.01,
+            "current_value": 0.012,
             "baseline_value": 0.01,
             "is_issue": false
           }
@@ -744,12 +768,12 @@
     "evidence_supports": [
       "data_quality_issue_excluded",
       "deployment_issue_excluded",
+      "feature_distribution_shift",
       "feature_drift_detected",
       "model_performance_drop",
-      "new_secure_email_patterns",
       "schema_drift_excluded"
     ],
-    "confidence": 0.95
+    "confidence": 0.85
   },
   "replans": 0,
   "warnings": []

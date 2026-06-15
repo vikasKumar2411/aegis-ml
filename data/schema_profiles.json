@@ -53,5 +53,16 @@
   "missing_fields": [],
   "extra_fields": [],
   "schema_drift_detected": false
+},
+{
+  "alert_id": "ALERT-006",
+  "model_id": "email_identification_model",
+  "model_version": "v47",
+  "schema_version": "schema-v12",
+  "expected_fields": ["subject", "body", "sender", "attachment_count"],
+  "observed_fields": ["subject", "body", "sender", "attachment_count"],
+  "missing_fields": [],
+  "extra_fields": [],
+  "schema_drift_detected": false
 }
 ]

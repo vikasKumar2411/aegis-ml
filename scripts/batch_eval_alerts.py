@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from app.services.pipeline_repair_runner import PipelineRepairRunner
 
@@ -12,17 +12,18 @@ def load_eval_cases(path: str) -> List[Dict[str, Any]]:
 
 
 def evaluate_case(case: Dict[str, Any], mode: str) -> Dict[str, Any]:
+    eval_type = case.get("eval_type", "normal")
+
     runner = PipelineRepairRunner(
-    mode=mode,
-    simulate_incomplete_plan=bool(case.get("simulate_incomplete_plan", False)),
-)
+        mode=mode,
+        simulate_incomplete_plan=bool(case.get("simulate_incomplete_plan", False)),
+    )
 
     state, report = runner.run(case["alert_id"])
 
     predicted_root_cause = (
         state.root_cause.root_cause if state.root_cause else "missing"
     )
-
     expected_root_cause = case["expected_root_cause"]
 
     actions_executed = {step.action for step in state.plan}
@@ -48,11 +49,17 @@ def evaluate_case(case: Dict[str, Any], mode: str) -> Dict[str, Any]:
         else 1.0
     )
 
-    replan_expected = bool(case.get("replan_expected", False))
-    replan_success = (
-        state.replans > 0
-        if replan_expected
-        else state.replans == 0
+    repair_expected = bool(case.get("repair_expected", False))
+    repair_triggered = state.replans > 0
+
+    repair_success_when_expected: Optional[bool] = (
+        repair_triggered if repair_expected else None
+    )
+
+    unnecessary_replan = (
+        repair_triggered
+        if eval_type == "normal" and not repair_expected
+        else False
     )
 
     unsafe_remediation = False
@@ -65,13 +72,17 @@ def evaluate_case(case: Dict[str, Any], mode: str) -> Dict[str, Any]:
         "case_id": case["case_id"],
         "alert_id": case["alert_id"],
         "mode": mode,
+        "eval_type": eval_type,
         "expected_root_cause": expected_root_cause,
         "predicted_root_cause": predicted_root_cause,
         "root_cause_correct": root_cause_correct,
         "required_step_coverage": round(required_step_coverage, 3),
         "evidence_sufficiency": round(evidence_sufficiency, 3),
         "replans": state.replans,
-        "replan_success": replan_success,
+        "repair_expected": repair_expected,
+        "repair_triggered": repair_triggered,
+        "repair_success_when_expected": repair_success_when_expected,
+        "unnecessary_replan": unnecessary_replan,
         "unsafe_remediation": unsafe_remediation,
         "actions_executed": sorted(actions_executed),
         "evidence_supports": sorted(evidence_supports),
@@ -80,16 +91,15 @@ def evaluate_case(case: Dict[str, Any], mode: str) -> Dict[str, Any]:
     }
 
 
-def summarize(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+def summarize_group(results: List[Dict[str, Any]]) -> Dict[str, Any]:
     total = len(results)
 
     if total == 0:
         return {
             "total_cases": 0,
-            "root_cause_accuracy": 0.0,
-            "avg_required_step_coverage": 0.0,
-            "avg_evidence_sufficiency": 0.0,
-            "replan_success_rate": 0.0,
+            "root_cause_accuracy": None,
+            "avg_required_step_coverage": None,
+            "avg_evidence_sufficiency": None,
             "unsafe_remediation_count": 0,
         }
 
@@ -105,10 +115,6 @@ def summarize(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         item["evidence_sufficiency"] for item in results
     ) / total
 
-    replan_success_rate = sum(
-        1 for item in results if item["replan_success"]
-    ) / total
-
     unsafe_remediation_count = sum(
         1 for item in results if item["unsafe_remediation"]
     )
@@ -118,7 +124,58 @@ def summarize(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         "root_cause_accuracy": round(root_cause_accuracy, 3),
         "avg_required_step_coverage": round(avg_required_step_coverage, 3),
         "avg_evidence_sufficiency": round(avg_evidence_sufficiency, 3),
-        "replan_success_rate": round(replan_success_rate, 3),
+        "unsafe_remediation_count": unsafe_remediation_count,
+    }
+
+
+def summarize(results: List[Dict[str, Any]]) -> Dict[str, Any]:
+    normal_results = [
+        item for item in results
+        if item.get("eval_type", "normal") == "normal"
+    ]
+
+    repair_stress_results = [
+        item for item in results
+        if item.get("eval_type") == "repair_stress_test"
+    ]
+
+    normal_summary = summarize_group(normal_results)
+    repair_stress_summary = summarize_group(repair_stress_results)
+
+    if normal_results:
+        unnecessary_replan_rate = sum(
+            1 for item in normal_results
+            if item["unnecessary_replan"] is True
+        ) / len(normal_results)
+        unnecessary_replan_rate = round(unnecessary_replan_rate, 3)
+    else:
+        unnecessary_replan_rate = None
+
+    if repair_stress_results:
+        repair_success_when_intentionally_stressed = sum(
+            1 for item in repair_stress_results
+            if item["repair_triggered"] is True
+            and item["root_cause_correct"] is True
+            and item["evidence_sufficiency"] >= 1.0
+        ) / len(repair_stress_results)
+        repair_success_when_intentionally_stressed = round(
+            repair_success_when_intentionally_stressed, 3
+        )
+    else:
+        repair_success_when_intentionally_stressed = None
+
+    unsafe_remediation_count = sum(
+        1 for item in results if item["unsafe_remediation"]
+    )
+
+    return {
+        "total_cases": len(results),
+        "normal_cases": normal_summary,
+        "repair_stress_cases": repair_stress_summary,
+        "unnecessary_replan_rate": unnecessary_replan_rate,
+        "repair_success_when_intentionally_stressed": (
+            repair_success_when_intentionally_stressed
+        ),
         "unsafe_remediation_count": unsafe_remediation_count,
     }
 
@@ -143,7 +200,6 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # print("************args.eval_cases**************", args.eval_cases)
     cases = load_eval_cases(args.eval_cases)
 
     results = [
@@ -165,16 +221,58 @@ def main() -> None:
     with output_path.open("w", encoding="utf-8") as file:
         json.dump(output_payload, file, indent=2)
 
+    normal_summary = summary["normal_cases"]
+    repair_summary = summary["repair_stress_cases"]
+
     print("\nAegisML Batch Evaluation Complete")
     print("--------------------------------")
     print(f"Mode: {args.mode}")
     print(f"Total cases: {summary['total_cases']}")
-    print(f"Root-cause accuracy: {summary['root_cause_accuracy']}")
-    print(f"Required diagnostic coverage: {summary['avg_required_step_coverage']}")
-    print(f"Evidence sufficiency: {summary['avg_evidence_sufficiency']}")
-    print(f"Replan success rate: {summary['replan_success_rate']}")
-    print(f"Unsafe remediation count: {summary['unsafe_remediation_count']}")
-    print(f"\nSaved: {args.output}")
+
+    print("\nNormal cases")
+    print("------------")
+    print(f"Cases: {normal_summary['total_cases']}")
+    print(f"Root-cause accuracy: {normal_summary['root_cause_accuracy']}")
+    print(
+        "Required diagnostic coverage: "
+        f"{normal_summary['avg_required_step_coverage']}"
+    )
+    print(
+        "Evidence sufficiency: "
+        f"{normal_summary['avg_evidence_sufficiency']}"
+    )
+    print(
+        "Unnecessary replan rate: "
+        f"{summary['unnecessary_replan_rate']}"
+    )
+    print(
+        "Unsafe remediation count: "
+        f"{normal_summary['unsafe_remediation_count']}"
+    )
+
+    print("\nRepair stress cases")
+    print("-------------------")
+    print(f"Cases: {repair_summary['total_cases']}")
+    print(f"Root-cause accuracy: {repair_summary['root_cause_accuracy']}")
+    print(
+        "Required diagnostic coverage: "
+        f"{repair_summary['avg_required_step_coverage']}"
+    )
+    print(
+        "Evidence sufficiency: "
+        f"{repair_summary['avg_evidence_sufficiency']}"
+    )
+    print(
+        "Repair success when intentionally stressed: "
+        f"{summary['repair_success_when_intentionally_stressed']}"
+    )
+    print(
+        "Unsafe remediation count: "
+        f"{repair_summary['unsafe_remediation_count']}"
+    )
+
+    print(f"\nOverall unsafe remediation count: {summary['unsafe_remediation_count']}")
+    print(f"Saved: {args.output}")
 
 
 if __name__ == "__main__":

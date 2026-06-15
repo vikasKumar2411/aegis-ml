@@ -17,71 +17,88 @@
     }
   },
   {
-  "alert_id": "ALERT-002",
-  "model_id": "email_identification_model",
-  "model_version": "v43",
-  "environment": "production",
-  "metric": "secure_email_precision",
-  "current_value": 0.81,
-  "baseline_value": 0.94,
-  "severity": "high",
-  "window_start": "2026-06-10T00:00:00Z",
-  "window_end": "2026-06-14T00:00:00Z",
-  "description": "Secure email precision dropped significantly after a recent model deployment.",
-  "metadata": {
-    "owner": "ml-platform",
-    "business_unit": "insurance"
+    "alert_id": "ALERT-002",
+    "model_id": "email_identification_model",
+    "model_version": "v43",
+    "environment": "production",
+    "metric": "secure_email_precision",
+    "current_value": 0.81,
+    "baseline_value": 0.94,
+    "severity": "high",
+    "window_start": "2026-06-10T00:00:00Z",
+    "window_end": "2026-06-14T00:00:00Z",
+    "description": "Secure email precision dropped significantly after a recent model deployment.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  },
+  {
+    "alert_id": "ALERT-003",
+    "model_id": "email_identification_model",
+    "model_version": "v44",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.74,
+    "baseline_value": 0.90,
+    "severity": "high",
+    "window_start": "2026-06-15T00:00:00Z",
+    "window_end": "2026-06-18T00:00:00Z",
+    "description": "Secure email recall dropped after an upstream input schema change.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  },
+  {
+    "alert_id": "ALERT-004",
+    "model_id": "email_identification_model",
+    "model_version": "v45",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.76,
+    "baseline_value": 0.90,
+    "severity": "high",
+    "window_start": "2026-06-19T00:00:00Z",
+    "window_end": "2026-06-22T00:00:00Z",
+    "description": "Secure email recall dropped after upstream data-quality degradation.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  },
+  {
+    "alert_id": "ALERT-005",
+    "model_id": "email_identification_model",
+    "model_version": "v46",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.895,
+    "baseline_value": 0.90,
+    "severity": "low",
+    "window_start": "2026-06-23T00:00:00Z",
+    "window_end": "2026-06-25T00:00:00Z",
+    "description": "Secure email recall changed slightly but remains within expected variation.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
+  },
+  {
+    "alert_id": "ALERT-006",
+    "model_id": "email_identification_model",
+    "model_version": "v47",
+    "environment": "production",
+    "metric": "secure_email_recall",
+    "current_value": 0.71,
+    "baseline_value": 0.84,
+    "severity": "high",
+    "window_start": "2026-06-26T00:00:00Z",
+    "window_end": "2026-06-29T00:00:00Z",
+    "description": "Secure email recall dropped due to a feature distribution shift in inbound email traffic. No correlated deployment, schema drift, or upstream data-quality degradation is present.",
+    "metadata": {
+      "owner": "ml-platform",
+      "business_unit": "insurance"
+    }
   }
-},
-{
-  "alert_id": "ALERT-003",
-  "model_id": "email_identification_model",
-  "model_version": "v44",
-  "environment": "production",
-  "metric": "secure_email_recall",
-  "current_value": 0.74,
-  "baseline_value": 0.90,
-  "severity": "high",
-  "window_start": "2026-06-15T00:00:00Z",
-  "window_end": "2026-06-18T00:00:00Z",
-  "description": "Secure email recall dropped after an upstream input schema change.",
-  "metadata": {
-    "owner": "ml-platform",
-    "business_unit": "insurance"
-  }
-},
-{
-  "alert_id": "ALERT-004",
-  "model_id": "email_identification_model",
-  "model_version": "v45",
-  "environment": "production",
-  "metric": "secure_email_recall",
-  "current_value": 0.76,
-  "baseline_value": 0.90,
-  "severity": "high",
-  "window_start": "2026-06-19T00:00:00Z",
-  "window_end": "2026-06-22T00:00:00Z",
-  "description": "Secure email recall dropped after upstream data-quality degradation.",
-  "metadata": {
-    "owner": "ml-platform",
-    "business_unit": "insurance"
-  }
-},
-{
-  "alert_id": "ALERT-005",
-  "model_id": "email_identification_model",
-  "model_version": "v46",
-  "environment": "production",
-  "metric": "secure_email_recall",
-  "current_value": 0.895,
-  "baseline_value": 0.90,
-  "severity": "low",
-  "window_start": "2026-06-23T00:00:00Z",
-  "window_end": "2026-06-25T00:00:00Z",
-  "description": "Secure email recall changed slightly but remains within expected variation.",
-  "metadata": {
-    "owner": "ml-platform",
-    "business_unit": "insurance"
-  }
-}
 ]

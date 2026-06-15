@@ -58,5 +58,25 @@
   "threshold": 0.2,
   "is_drifted": false,
   "summary": "No significant feature drift detected."
+},
+{
+  "alert_id": "ALERT-006",
+  "model_id": "email_identification_model",
+  "model_version": "v47",
+  "feature_name": "email_body_length",
+  "drift_score": 0.42,
+  "threshold": 0.2,
+  "is_drifted": true,
+  "summary": "Inbound secure-email messages became materially shorter than the training baseline, changing the input distribution seen by the model."
+},
+{
+  "alert_id": "ALERT-006",
+  "model_id": "email_identification_model",
+  "model_version": "v47",
+  "feature_name": "attachment_to_text_ratio",
+  "drift_score": 0.38,
+  "threshold": 0.2,
+  "is_drifted": true,
+  "summary": "Current secure-email traffic has a higher attachment-to-text ratio, causing distribution shift without schema or data-quality degradation."
 }
 ]

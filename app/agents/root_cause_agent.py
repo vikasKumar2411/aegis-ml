@@ -85,6 +85,36 @@ class RootCauseAgent:
                 metadata={"reasoning_mode": "deterministic"},
             )
 
+        if self._supports_feature_drift_cause(supports):
+            return RootCause(
+                root_cause="feature_drift",
+                confidence=0.82,
+                summary=(
+                    "The model degradation is most likely caused by feature drift. "
+                    "Evidence shows a significant model-performance drop and detected "
+                    "input feature distribution shift, while deployment, schema drift, "
+                    "and upstream data-quality issues were excluded."
+                ),
+                alternative_causes=[
+                    {
+                        "cause": "bad_model_deployment",
+                        "confidence": 0.08,
+                        "reason": "Deployment diagnostics were checked and excluded.",
+                    },
+                    {
+                        "cause": "schema_drift",
+                        "confidence": 0.05,
+                        "reason": "Schema drift diagnostics were checked and excluded.",
+                    },
+                    {
+                        "cause": "data_quality_issue",
+                        "confidence": 0.05,
+                        "reason": "Data-quality diagnostics were checked and excluded.",
+                    },
+                ],
+                metadata={"reasoning_mode": "deterministic"},
+            )
+
         if "no_significant_model_performance_drop" in supports:
             return RootCause(
                 root_cause="false_alarm",
@@ -124,5 +154,15 @@ class RootCauseAgent:
             "model_performance_drop",
             "new_secure_email_patterns",
             "deployment_issue_excluded",
+        }
+        return required.issubset(supports)
+
+    def _supports_feature_drift_cause(self, supports: Set[str]) -> bool:
+        required = {
+            "model_performance_drop",
+            "feature_drift_detected",
+            "deployment_issue_excluded",
+            "schema_drift_excluded",
+            "data_quality_issue_excluded",
         }
         return required.issubset(supports)
