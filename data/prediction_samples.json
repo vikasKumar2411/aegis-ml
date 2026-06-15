@@ -86,5 +86,16 @@
   "error_type": "false_negative",
   "text": "",
   "pattern": "empty_body_due_to_data_quality"
+},
+{
+  "alert_id": "ALERT-005",
+  "model_id": "email_identification_model",
+  "model_version": "v46",
+  "sample_id": "SAMPLE-009",
+  "actual_label": "secure",
+  "predicted_label": "secure",
+  "error_type": "correct",
+  "text": "Secure portal message correctly classified.",
+  "pattern": "no_error_pattern"
 }
 ]

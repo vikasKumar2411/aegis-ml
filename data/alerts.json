@@ -66,5 +66,22 @@
     "owner": "ml-platform",
     "business_unit": "insurance"
   }
+},
+{
+  "alert_id": "ALERT-005",
+  "model_id": "email_identification_model",
+  "model_version": "v46",
+  "environment": "production",
+  "metric": "secure_email_recall",
+  "current_value": 0.895,
+  "baseline_value": 0.90,
+  "severity": "low",
+  "window_start": "2026-06-23T00:00:00Z",
+  "window_end": "2026-06-25T00:00:00Z",
+  "description": "Secure email recall changed slightly but remains within expected variation.",
+  "metadata": {
+    "owner": "ml-platform",
+    "business_unit": "insurance"
+  }
 }
 ]

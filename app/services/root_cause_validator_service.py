@@ -103,6 +103,20 @@ class RootCauseValidatorService:
                     "Missing data-quality exclusion evidence."
                 ),
             },
+            "false_alarm": {
+                "no_significant_model_performance_drop": (
+                    "Missing evidence that the model-performance change is not significant."
+                ),
+                "deployment_issue_excluded": (
+                    "Missing deployment exclusion evidence."
+                ),
+                "schema_drift_excluded": (
+                    "Missing schema-drift exclusion evidence."
+                ),
+                "data_quality_issue_excluded": (
+                    "Missing data-quality exclusion evidence."
+                ),
+            },
         }
 
         required = required_by_root_cause.get(root_cause.root_cause, {})

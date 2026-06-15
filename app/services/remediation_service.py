@@ -73,6 +73,22 @@ class RemediationService:
                 ],
             )
 
+        if root_cause.root_cause == "false_alarm":
+            return RemediationRecommendation(
+                recommended_action="continue_monitoring_no_action_required",
+                priority="low",
+                human_approval_required=True,
+                reason=(
+                    "The alert does not show a significant model-performance degradation. "
+                    "No production-changing action is recommended."
+                ),
+                actions=[
+                    "Keep monitoring the metric over the next evaluation window.",
+                    "Do not retrain, roll back, or modify production pipelines based on this alert alone.",
+                    "Escalate only if the metric continues to degrade or crosses the significance threshold.",
+                ],
+            )
+
         return RemediationRecommendation(
             recommended_action="manual_investigation_required",
             priority="medium",

@@ -1,21 +1,21 @@
 {
-  "report_id": "REPORT-ALERT-002",
-  "alert_id": "ALERT-002",
+  "report_id": "REPORT-ALERT-005",
+  "alert_id": "ALERT-005",
   "model_id": "email_identification_model",
   "status": "completed",
-  "goal": "Investigate production ML alert ALERT-002 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
+  "goal": "Investigate production ML alert ALERT-005 for model email_identification_model and produce an evidence-backed root-cause report with safe remediation recommendations.",
   "alert": {
-    "alert_id": "ALERT-002",
+    "alert_id": "ALERT-005",
     "model_id": "email_identification_model",
-    "model_version": "v43",
+    "model_version": "v46",
     "environment": "production",
-    "metric": "secure_email_precision",
-    "current_value": 0.81,
-    "baseline_value": 0.94,
-    "severity": "high",
-    "window_start": "2026-06-10T00:00:00Z",
-    "window_end": "2026-06-14T00:00:00Z",
-    "description": "Secure email precision dropped significantly after a recent model deployment.",
+    "metric": "secure_email_recall",
+    "current_value": 0.895,
+    "baseline_value": 0.9,
+    "severity": "low",
+    "window_start": "2026-06-23T00:00:00Z",
+    "window_end": "2026-06-25T00:00:00Z",
+    "description": "Secure email recall changed slightly but remains within expected variation.",
     "metadata": {
       "owner": "ml-platform",
       "business_unit": "insurance"
@@ -33,52 +33,52 @@
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model v43",
-      "reason": "Verify overall model performance metrics have degraded."
+      "target": "email_identification_model v46",
+      "reason": "Verify if the model performance degradation is within acceptable limits."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
-      "reason": "Identify specific errors contributing to the drop in precision."
+      "target": "secure_email_recall",
+      "reason": "Identify specific prediction errors contributing to the recall change."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input features for email_identification_model v43",
-      "reason": "Assess if input data distribution has changed, affecting model performance."
+      "target": "email_identification_model inputs",
+      "reason": "Assess if input data distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
-      "target": "email_identification_model v43 deployments",
-      "reason": "Rule out any recent changes or issues from the deployment process."
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues impacting the model's performance."
     }
   ],
   "final_plan": [
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model v43",
-      "reason": "Verify overall model performance metrics have degraded."
+      "target": "email_identification_model v46",
+      "reason": "Verify if the model performance degradation is within acceptable limits."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
-      "reason": "Identify specific errors contributing to the drop in precision."
+      "target": "secure_email_recall",
+      "reason": "Identify specific prediction errors contributing to the recall change."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input features for email_identification_model v43",
-      "reason": "Assess if input data distribution has changed, affecting model performance."
+      "target": "email_identification_model inputs",
+      "reason": "Assess if input data distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
-      "target": "email_identification_model v43 deployments",
-      "reason": "Rule out any recent changes or issues from the deployment process."
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues impacting the model's performance."
     },
     {
       "step_id": 5,
@@ -97,26 +97,26 @@
     {
       "step_id": 1,
       "action": "check_model_performance",
-      "target": "email_identification_model v43",
-      "reason": "Verify overall model performance metrics have degraded."
+      "target": "email_identification_model v46",
+      "reason": "Verify if the model performance degradation is within acceptable limits."
     },
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_precision issues",
-      "reason": "Identify specific errors contributing to the drop in precision."
+      "target": "secure_email_recall",
+      "reason": "Identify specific prediction errors contributing to the recall change."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "input features for email_identification_model v43",
-      "reason": "Assess if input data distribution has changed, affecting model performance."
+      "target": "email_identification_model inputs",
+      "reason": "Assess if input data distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
-      "target": "email_identification_model v43 deployments",
-      "reason": "Rule out any recent changes or issues from the deployment process."
+      "target": "production environment",
+      "reason": "Rule out any recent deployment issues impacting the model's performance."
     },
     {
       "step_id": 5,
@@ -141,26 +141,26 @@
       {
         "step_id": 1,
         "action": "check_model_performance",
-        "target": "email_identification_model v43",
-        "reason": "Verify overall model performance metrics have degraded."
+        "target": "email_identification_model v46",
+        "reason": "Verify if the model performance degradation is within acceptable limits."
       },
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_precision issues",
-        "reason": "Identify specific errors contributing to the drop in precision."
+        "target": "secure_email_recall",
+        "reason": "Identify specific prediction errors contributing to the recall change."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
-        "target": "input features for email_identification_model v43",
-        "reason": "Assess if input data distribution has changed, affecting model performance."
+        "target": "email_identification_model inputs",
+        "reason": "Assess if input data distribution has shifted, affecting model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
-        "target": "email_identification_model v43 deployments",
-        "reason": "Rule out any recent changes or issues from the deployment process."
+        "target": "production environment",
+        "reason": "Rule out any recent deployment issues impacting the model's performance."
       }
     ],
     "approved_step_count": 4,
@@ -169,61 +169,48 @@
   },
   "evidence": [
     {
-      "evidence_id": "EVID-email_identification_model-secure_email_precision",
+      "evidence_id": "EVID-email_identification_model-secure_email_recall",
       "source": "model_performance_service",
-      "finding": "secure_email_precision dropped from 0.94 to 0.81, a decline of 0.13.",
-      "supports": "model_performance_drop",
-      "confidence": 0.95,
+      "finding": "secure_email_recall changed from 0.9 to 0.895, but the change is not significant.",
+      "supports": "no_significant_model_performance_drop",
+      "confidence": 0.7,
       "metadata": {
-        "alert_id": "ALERT-002",
+        "alert_id": "ALERT-005",
         "model_id": "email_identification_model",
-        "model_version": "v43",
-        "metric": "secure_email_precision",
-        "baseline_value": 0.94,
-        "current_value": 0.81,
-        "drop": 0.13,
-        "is_significant": true,
-        "window_start": "2026-06-10T00:00:00Z",
-        "window_end": "2026-06-14T00:00:00Z"
+        "model_version": "v46",
+        "metric": "secure_email_recall",
+        "baseline_value": 0.9,
+        "current_value": 0.895,
+        "drop": 0.005,
+        "is_significant": false,
+        "window_start": "2026-06-23T00:00:00Z",
+        "window_end": "2026-06-25T00:00:00Z"
       }
     },
     {
       "evidence_id": "EVID-email_identification_model-prediction-errors",
       "source": "prediction_error_service",
-      "finding": "2 false-positive samples share dominant pattern: post_deployment_false_positive.",
-      "supports": "post_deployment_false_positive",
-      "confidence": 0.8,
+      "finding": "No strong prediction error pattern detected.",
+      "supports": "no_clear_prediction_error_pattern",
+      "confidence": 0.6,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-002",
-        "model_version": "v43",
+        "alert_id": "ALERT-005",
+        "model_version": "v46",
         "false_negative_count": 0,
-        "false_positive_count": 2,
-        "pattern_counts": {
-          "post_deployment_false_positive": 2
-        },
+        "false_positive_count": 0,
+        "pattern_counts": {},
         "samples": [
           {
-            "alert_id": "ALERT-002",
+            "alert_id": "ALERT-005",
             "model_id": "email_identification_model",
-            "model_version": "v43",
-            "sample_id": "SAMPLE-003",
-            "actual_label": "rfp",
+            "model_version": "v46",
+            "sample_id": "SAMPLE-009",
+            "actual_label": "secure",
             "predicted_label": "secure",
-            "error_type": "false_positive",
-            "text": "Please review the attached proposal package and census details.",
-            "pattern": "post_deployment_false_positive"
-          },
-          {
-            "alert_id": "ALERT-002",
-            "model_id": "email_identification_model",
-            "model_version": "v43",
-            "sample_id": "SAMPLE-004",
-            "actual_label": "rfp",
-            "predicted_label": "secure",
-            "error_type": "false_positive",
-            "text": "Attached are the RFP documents and plan information for review.",
-            "pattern": "post_deployment_false_positive"
+            "error_type": "correct",
+            "text": "Secure portal message correctly classified.",
+            "pattern": "no_error_pattern"
           }
         ]
       }
@@ -236,18 +223,18 @@
       "confidence": 0.8,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-002",
-        "model_version": "v43",
+        "alert_id": "ALERT-005",
+        "model_version": "v46",
         "features_checked": [
           {
-            "alert_id": "ALERT-002",
+            "alert_id": "ALERT-005",
             "model_id": "email_identification_model",
-            "model_version": "v43",
+            "model_version": "v46",
             "feature_name": "secure_phrase_count",
-            "drift_score": 0.05,
+            "drift_score": 0.03,
             "threshold": 0.2,
             "is_drifted": false,
-            "summary": "No significant feature drift detected during the alert window."
+            "summary": "No significant feature drift detected."
           }
         ]
       }
@@ -255,23 +242,23 @@
     {
       "evidence_id": "EVID-email_identification_model-deployment-correlation",
       "source": "deployment_service",
-      "finding": "At least one deployment correlates with the alert window.",
-      "supports": "bad_model_deployment_possible",
-      "confidence": 0.8,
+      "finding": "No deployment event appears correlated with the alert window.",
+      "supports": "deployment_issue_excluded",
+      "confidence": 0.85,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-002",
-        "model_version": "v43",
-        "correlated_deployments": [
+        "alert_id": "ALERT-005",
+        "model_version": "v46",
+        "deployments_checked": [
           {
-            "alert_id": "ALERT-002",
+            "alert_id": "ALERT-005",
             "model_id": "email_identification_model",
-            "deployment_id": "DEPLOY-101",
-            "model_version": "v43",
-            "deployed_at": "2026-06-10T03:00:00Z",
-            "change_type": "model_deployment",
+            "deployment_id": "DEPLOY-104",
+            "model_version": "v46",
+            "deployed_at": "2026-06-01T09:00:00Z",
+            "change_type": "routine_monitoring_window",
             "status": "success",
-            "correlates_with_alert": true
+            "correlates_with_alert": false
           }
         ]
       }
@@ -283,9 +270,9 @@
       "supports": "schema_drift_excluded",
       "confidence": 0.85,
       "metadata": {
-        "alert_id": "ALERT-002",
+        "alert_id": "ALERT-005",
         "model_id": "email_identification_model",
-        "model_version": "v43",
+        "model_version": "v46",
         "schema_version": "schema-v12",
         "expected_fields": [
           "subject",
@@ -312,22 +299,22 @@
       "confidence": 0.8,
       "metadata": {
         "model_id": "email_identification_model",
-        "alert_id": "ALERT-002",
-        "model_version": "v43",
+        "alert_id": "ALERT-005",
+        "model_version": "v46",
         "checks": [
           {
-            "alert_id": "ALERT-002",
+            "alert_id": "ALERT-005",
             "model_id": "email_identification_model",
-            "model_version": "v43",
+            "model_version": "v46",
             "check_name": "null_body_rate",
             "current_value": 0.02,
             "baseline_value": 0.02,
             "is_issue": false
           },
           {
-            "alert_id": "ALERT-002",
+            "alert_id": "ALERT-005",
             "model_id": "email_identification_model",
-            "model_version": "v43",
+            "model_version": "v46",
             "check_name": "duplicate_email_rate",
             "current_value": 0.01,
             "baseline_value": 0.01,
@@ -338,19 +325,19 @@
     }
   ],
   "root_cause": {
-    "root_cause": "bad_model_deployment",
-    "confidence": 0.8,
-    "summary": "The evidence points to a potential bad model deployment as the root cause of the secure_email_precision drop, with one correlated deployment detected during the alert window.",
+    "root_cause": "false_alarm",
+    "confidence": 0.9,
+    "summary": "The alert appears to be a false alarm because the monitored metric did not show a significant model-performance degradation.",
     "alternative_causes": [
       {
         "cause": "feature_drift",
-        "confidence": 0.2,
-        "reason": "No significant feature drift was detected."
+        "confidence": 0.8,
+        "reason": "While feature drift was not detected, minor changes could still be present."
       },
       {
-        "cause": "false_alarm",
-        "confidence": 0.1,
-        "reason": "The evidence does not strongly support other causes, and there is no significant model performance drop that could be attributed to a different cause."
+        "cause": "data_quality_issue",
+        "confidence": 0.75,
+        "reason": "Data quality checks did not reveal issues, but they might have been insufficiently sensitive."
       }
     ],
     "metadata": {
@@ -366,25 +353,24 @@
     "feedback": [],
     "missing_evidence": [],
     "evidence_supports": [
-      "bad_model_deployment_possible",
       "data_quality_issue_excluded",
+      "deployment_issue_excluded",
       "feature_drift_not_detected",
-      "model_performance_drop",
-      "post_deployment_false_positive",
+      "no_clear_prediction_error_pattern",
+      "no_significant_model_performance_drop",
       "schema_drift_excluded"
     ],
-    "confidence": 0.8
+    "confidence": 0.9
   },
   "remediation": {
-    "recommended_action": "rollback_or_compare_recent_deployment",
-    "priority": "critical",
+    "recommended_action": "continue_monitoring_no_action_required",
+    "priority": "low",
     "human_approval_required": true,
-    "reason": "A recent deployment appears correlated with the model-performance drop.",
+    "reason": "The alert does not show a significant model-performance degradation. No production-changing action is recommended.",
     "actions": [
-      "Compare current model version against previous production version.",
-      "Run rollback candidate evaluation.",
-      "Review deployment diff and pipeline changes.",
-      "Require human approval before rollback."
+      "Keep monitoring the metric over the next evaluation window.",
+      "Do not retrain, roll back, or modify production pipelines based on this alert alone.",
+      "Escalate only if the metric continues to degrade or crosses the significance threshold."
     ]
   },
   "repair_history": [
@@ -418,14 +404,14 @@
         "feedback": [],
         "missing_evidence": [],
         "evidence_supports": [
-          "bad_model_deployment_possible",
           "data_quality_issue_excluded",
+          "deployment_issue_excluded",
           "feature_drift_not_detected",
-          "model_performance_drop",
-          "post_deployment_false_positive",
+          "no_clear_prediction_error_pattern",
+          "no_significant_model_performance_drop",
           "schema_drift_excluded"
         ],
-        "confidence": 0.8
+        "confidence": 0.9
       }
     }
   ],

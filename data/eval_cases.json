@@ -83,5 +83,26 @@
   "simulate_incomplete_plan": false,
   "replan_expected": false,
   "description": "Recall degradation caused by upstream data-quality issue with elevated null body rate."
+},
+{
+  "case_id": "EVAL-005",
+  "alert_id": "ALERT-005",
+  "expected_root_cause": "false_alarm",
+  "required_actions": [
+    "check_model_performance",
+    "analyze_prediction_errors",
+    "check_recent_deployments",
+    "check_schema_drift",
+    "check_data_quality"
+  ],
+  "required_evidence": [
+    "no_significant_model_performance_drop",
+    "deployment_issue_excluded",
+    "schema_drift_excluded",
+    "data_quality_issue_excluded"
+  ],
+  "simulate_incomplete_plan": false,
+  "replan_expected": false,
+  "description": "Low-severity alert where metric movement is not statistically significant and no operational cause is found."
 }
 ]

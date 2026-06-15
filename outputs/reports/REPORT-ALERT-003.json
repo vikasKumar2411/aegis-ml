@@ -40,19 +40,19 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors that have led to the recall drop."
+      "reason": "Identify specific errors contributing to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
       "target": "email_identification_model v44 inputs",
-      "reason": "Check if input distribution has changed, affecting model performance."
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues impacting the model."
     }
   ],
   "final_plan": [
@@ -66,31 +66,31 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors that have led to the recall drop."
+      "reason": "Identify specific errors contributing to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
       "target": "email_identification_model v44 inputs",
-      "reason": "Check if input distribution has changed, affecting model performance."
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues impacting the model."
     },
     {
       "step_id": 5,
       "action": "check_schema_drift",
       "target": "email_identification_model",
-      "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
+      "reason": "Root-cause validation requires schema-drift evidence before accepting the hypothesis."
     },
     {
       "step_id": 6,
       "action": "check_data_quality",
       "target": "email_identification_model",
-      "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
+      "reason": "Root-cause validation requires data-quality evidence before accepting the hypothesis."
     }
   ],
   "plan": [
@@ -104,31 +104,31 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors that have led to the recall drop."
+      "reason": "Identify specific errors contributing to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
       "target": "email_identification_model v44 inputs",
-      "reason": "Check if input distribution has changed, affecting model performance."
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues impacting the model."
     },
     {
       "step_id": 5,
       "action": "check_schema_drift",
       "target": "email_identification_model",
-      "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
+      "reason": "Root-cause validation requires schema-drift evidence before accepting the hypothesis."
     },
     {
       "step_id": 6,
       "action": "check_data_quality",
       "target": "email_identification_model",
-      "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
+      "reason": "Root-cause validation requires data-quality evidence before accepting the hypothesis."
     }
   ],
   "plan_quality": {
@@ -148,19 +148,19 @@
         "step_id": 2,
         "action": "analyze_prediction_errors",
         "target": "secure_email_recall",
-        "reason": "Identify specific errors that have led to the recall drop."
+        "reason": "Identify specific errors contributing to the recall drop."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
         "target": "email_identification_model v44 inputs",
-        "reason": "Check if input distribution has changed, affecting model performance."
+        "reason": "Check if input distribution has shifted, affecting model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
         "target": "production environment",
-        "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+        "reason": "Rule out any recent deployment issues impacting the model."
       }
     ],
     "approved_step_count": 4,
@@ -344,12 +344,12 @@
   "root_cause": {
     "root_cause": "schema_drift",
     "confidence": 0.9,
-    "summary": "The evidence points to schema drift as the primary cause of the secure_email_recall drop, with missing fields in the input data.",
+    "summary": "The evidence points to schema drift as the root cause, specifically missing fields in the input data.",
     "alternative_causes": [
       {
         "cause": "new_secure_email_patterns",
-        "confidence": 0.15,
-        "reason": "While there are false negatives, the specific pattern 'missing_body_field' does not strongly suggest new patterns."
+        "confidence": 0.2,
+        "reason": "While there are false negatives with a specific pattern, the primary issue seems to be related to schema changes."
       }
     ],
     "metadata": {
@@ -400,13 +400,13 @@
           "step_id": 5,
           "action": "check_schema_drift",
           "target": "email_identification_model",
-          "reason": "Root-cause validation requires schema-drift exclusion evidence before accepting the hypothesis."
+          "reason": "Root-cause validation requires schema-drift evidence before accepting the hypothesis."
         },
         {
           "step_id": 6,
           "action": "check_data_quality",
           "target": "email_identification_model",
-          "reason": "Root-cause validation requires data-quality exclusion evidence before accepting the hypothesis."
+          "reason": "Root-cause validation requires data-quality evidence before accepting the hypothesis."
         }
       ]
     },

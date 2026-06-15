@@ -85,6 +85,24 @@ class RootCauseAgent:
                 metadata={"reasoning_mode": "deterministic"},
             )
 
+        if "no_significant_model_performance_drop" in supports:
+            return RootCause(
+                root_cause="false_alarm",
+                confidence=0.85,
+                summary=(
+                    "The alert appears to be a false alarm because the monitored metric "
+                    "changed only slightly and did not show a significant performance degradation."
+                ),
+                alternative_causes=[
+                    {
+                        "cause": "minor_metric_noise",
+                        "confidence": 0.70,
+                        "reason": "The metric movement is within the expected non-significant range.",
+                    }
+                ],
+                metadata={"reasoning_mode": "deterministic"},
+            )
+
         return RootCause(
             root_cause="inconclusive",
             confidence=0.40,

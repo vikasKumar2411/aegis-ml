@@ -64,6 +64,16 @@ class LLMRootCauseAgent:
         # Normalize common LLM variants into our controlled taxonomy.
         root_cause = self._normalize_root_cause(root_cause)
 
+        evidence_supports = {item.supports for item in evidence}
+
+        if "no_significant_model_performance_drop" in evidence_supports:
+            root_cause = "false_alarm"
+            result["summary"] = (
+                "The alert appears to be a false alarm because the monitored metric "
+                "did not show a significant model-performance degradation."
+            )
+            result["confidence"] = max(float(result.get("confidence", 0.4)), 0.85)
+
         confidence = float(result.get("confidence", 0.4))
         confidence = max(0.0, min(confidence, 1.0))
 
@@ -103,13 +113,15 @@ Rules:
 - Return ONLY valid JSON.
 - Use one of the allowed root causes exactly.
 - Prefer specific root causes over vague ones.
+- If evidence contains no_significant_model_performance_drop, use false_alarm.
+- If there is no significant model-performance degradation and common causes are excluded, use false_alarm, not inconclusive.
+- Use inconclusive only when required evidence is missing or contradictory.
 - If evidence shows false negatives with new secure-email phrasing, use new_secure_email_patterns.
 - If evidence shows a correlated deployment, use bad_model_deployment.
 - If evidence shows schema mismatch, use schema_drift.
 - If evidence shows upstream data-quality degradation, use data_quality_issue.
 - If evidence only shows feature distribution shift but no clearer cause, use feature_drift.
 - If evidence supports multiple causes, use mixed_cause.
-- If evidence is insufficient, use inconclusive.
 - Do not recommend remediation here.
 """.strip()
 
@@ -120,13 +132,25 @@ Rules:
             "feature_drift_in_secure_phrase_count": "new_secure_email_patterns",
             "new_secure_email_phrasing": "new_secure_email_patterns",
             "new_secure_email_patterns": "new_secure_email_patterns",
+
             "bad_model_deployment": "bad_model_deployment",
             "deployment_issue": "bad_model_deployment",
+
             "schema_drift": "schema_drift",
             "data_quality_issue": "data_quality_issue",
             "feature_drift": "feature_drift",
             "mixed_cause": "mixed_cause",
+
             "false_alarm": "false_alarm",
+            "minor_metric_noise": "false_alarm",
+            "metric_noise": "false_alarm",
+            "not_a_real_alert": "false_alarm",
+            "no_issue_found": "false_alarm",
+            "no_significant_degradation": "false_alarm",
+            "non_significant_change": "false_alarm",
+            "non_significant_metric_change": "false_alarm",
+            "no_significant_model_performance_drop": "false_alarm",
+
             "inconclusive": "inconclusive",
         }
 
