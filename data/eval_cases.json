@@ -62,5 +62,26 @@
   "simulate_incomplete_plan": false,
   "replan_expected": false,
   "description": "Recall degradation caused by upstream schema drift where expected body field was replaced by message_body."
+},
+{
+  "case_id": "EVAL-004",
+  "alert_id": "ALERT-004",
+  "expected_root_cause": "data_quality_issue",
+  "required_actions": [
+    "check_model_performance",
+    "analyze_prediction_errors",
+    "check_recent_deployments",
+    "check_schema_drift",
+    "check_data_quality"
+  ],
+  "required_evidence": [
+    "model_performance_drop",
+    "data_quality_issue_detected",
+    "deployment_issue_excluded",
+    "schema_drift_excluded"
+  ],
+  "simulate_incomplete_plan": false,
+  "replan_expected": false,
+  "description": "Recall degradation caused by upstream data-quality issue with elevated null body rate."
 }
 ]

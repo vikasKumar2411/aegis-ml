@@ -39,20 +39,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_recall",
-      "reason": "Identify specific errors that led to the drop in secure email recall."
+      "target": "secure_email_recall predictions",
+      "reason": "Identify specific errors that led to the drop in recall."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model input features",
-      "reason": "Check if there has been a shift in the input data distribution affecting model performance."
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in recall."
     }
   ],
   "final_plan": [
@@ -65,20 +65,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_recall",
-      "reason": "Identify specific errors that led to the drop in secure email recall."
+      "target": "secure_email_recall predictions",
+      "reason": "Identify specific errors that led to the drop in recall."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model input features",
-      "reason": "Check if there has been a shift in the input data distribution affecting model performance."
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in recall."
     },
     {
       "step_id": 5,
@@ -103,20 +103,20 @@
     {
       "step_id": 2,
       "action": "analyze_prediction_errors",
-      "target": "secure_email_recall",
-      "reason": "Identify specific errors that led to the drop in secure email recall."
+      "target": "secure_email_recall predictions",
+      "reason": "Identify specific errors that led to the drop in recall."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model input features",
-      "reason": "Check if there has been a shift in the input data distribution affecting model performance."
+      "target": "input features for email_identification_model v42",
+      "reason": "Check if input distribution has shifted, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in recall."
     },
     {
       "step_id": 5,
@@ -147,20 +147,20 @@
       {
         "step_id": 2,
         "action": "analyze_prediction_errors",
-        "target": "secure_email_recall",
-        "reason": "Identify specific errors that led to the drop in secure email recall."
+        "target": "secure_email_recall predictions",
+        "reason": "Identify specific errors that led to the drop in recall."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
-        "target": "email_identification_model input features",
-        "reason": "Check if there has been a shift in the input data distribution affecting model performance."
+        "target": "input features for email_identification_model v42",
+        "reason": "Check if input distribution has shifted, affecting model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
         "target": "production environment",
-        "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
+        "reason": "Rule out any recent deployment issues that might have caused the drop in recall."
       }
     ],
     "approved_step_count": 4,
@@ -338,12 +338,12 @@
   "root_cause": {
     "root_cause": "new_secure_email_patterns",
     "confidence": 0.95,
-    "summary": "The decline in secure email recall is strongly supported by the presence of false negatives with a new secure email pattern, indicating that the model struggles to identify emails containing this specific phrasing.",
+    "summary": "The drop in secure email recall is strongly supported by the presence of false negatives with a new secure email pattern, indicating that the model struggles to identify emails containing this specific phrasing.",
     "alternative_causes": [
       {
         "cause": "feature_drift",
         "confidence": 0.85,
-        "reason": "Feature drift in 'secure_phrase_count' suggests an increase in new secure email phrasing not seen in training data, which could contribute to the model's performance drop."
+        "reason": "Feature drift in 'secure_phrase_count' suggests an increase in new secure email phrasing not seen in training data, which could contribute to the model's performance degradation."
       }
     ],
     "metadata": {

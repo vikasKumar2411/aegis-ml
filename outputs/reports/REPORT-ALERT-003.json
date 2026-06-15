@@ -40,19 +40,19 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors contributing to the recall drop."
+      "reason": "Identify specific errors that have led to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model inputs",
-      "reason": "Assess if input data distribution has shifted significantly."
+      "target": "email_identification_model v44 inputs",
+      "reason": "Check if input distribution has changed, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues affecting the model."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
     }
   ],
   "final_plan": [
@@ -66,19 +66,19 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors contributing to the recall drop."
+      "reason": "Identify specific errors that have led to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model inputs",
-      "reason": "Assess if input data distribution has shifted significantly."
+      "target": "email_identification_model v44 inputs",
+      "reason": "Check if input distribution has changed, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues affecting the model."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
     },
     {
       "step_id": 5,
@@ -104,19 +104,19 @@
       "step_id": 2,
       "action": "analyze_prediction_errors",
       "target": "secure_email_recall",
-      "reason": "Identify specific errors contributing to the recall drop."
+      "reason": "Identify specific errors that have led to the recall drop."
     },
     {
       "step_id": 3,
       "action": "check_feature_drift",
-      "target": "email_identification_model inputs",
-      "reason": "Assess if input data distribution has shifted significantly."
+      "target": "email_identification_model v44 inputs",
+      "reason": "Check if input distribution has changed, affecting model performance."
     },
     {
       "step_id": 4,
       "action": "check_recent_deployments",
       "target": "production environment",
-      "reason": "Rule out any recent deployment issues affecting the model."
+      "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
     },
     {
       "step_id": 5,
@@ -148,19 +148,19 @@
         "step_id": 2,
         "action": "analyze_prediction_errors",
         "target": "secure_email_recall",
-        "reason": "Identify specific errors contributing to the recall drop."
+        "reason": "Identify specific errors that have led to the recall drop."
       },
       {
         "step_id": 3,
         "action": "check_feature_drift",
-        "target": "email_identification_model inputs",
-        "reason": "Assess if input data distribution has shifted significantly."
+        "target": "email_identification_model v44 inputs",
+        "reason": "Check if input distribution has changed, affecting model performance."
       },
       {
         "step_id": 4,
         "action": "check_recent_deployments",
         "target": "production environment",
-        "reason": "Rule out any recent deployment issues affecting the model."
+        "reason": "Rule out any recent deployment issues that might have caused the drop in secure email recall."
       }
     ],
     "approved_step_count": 4,
@@ -344,12 +344,12 @@
   "root_cause": {
     "root_cause": "schema_drift",
     "confidence": 0.9,
-    "summary": "The evidence points to schema drift as the primary cause of the secure_email_recall drop, with missing fields in the input data affecting model performance.",
+    "summary": "The evidence points to schema drift as the primary cause of the secure_email_recall drop, with missing fields in the input data.",
     "alternative_causes": [
       {
         "cause": "new_secure_email_patterns",
-        "confidence": 0.1,
-        "reason": "While there are false negatives, they do not align strongly with a new pattern."
+        "confidence": 0.15,
+        "reason": "While there are false negatives, the specific pattern 'missing_body_field' does not strongly suggest new patterns."
       }
     ],
     "metadata": {

@@ -52,5 +52,23 @@
   "current_value": 0.01,
   "baseline_value": 0.01,
   "is_issue": false
+},
+{
+  "alert_id": "ALERT-004",
+  "model_id": "email_identification_model",
+  "model_version": "v45",
+  "check_name": "null_body_rate",
+  "current_value": 0.31,
+  "baseline_value": 0.02,
+  "is_issue": true
+},
+{
+  "alert_id": "ALERT-004",
+  "model_id": "email_identification_model",
+  "model_version": "v45",
+  "check_name": "duplicate_email_rate",
+  "current_value": 0.01,
+  "baseline_value": 0.01,
+  "is_issue": false
 }
 ]

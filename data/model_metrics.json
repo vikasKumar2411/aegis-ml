@@ -42,5 +42,17 @@
   "is_significant": true,
   "window_start": "2026-06-15T00:00:00Z",
   "window_end": "2026-06-18T00:00:00Z"
+},
+{
+  "alert_id": "ALERT-004",
+  "model_id": "email_identification_model",
+  "model_version": "v45",
+  "metric": "secure_email_recall",
+  "baseline_value": 0.90,
+  "current_value": 0.76,
+  "drop": 0.14,
+  "is_significant": true,
+  "window_start": "2026-06-19T00:00:00Z",
+  "window_end": "2026-06-22T00:00:00Z"
 }
 ]

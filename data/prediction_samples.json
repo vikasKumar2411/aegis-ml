@@ -64,5 +64,27 @@
   "error_type": "false_negative",
   "text": "",
   "pattern": "missing_body_field"
+},
+{
+  "alert_id": "ALERT-004",
+  "model_id": "email_identification_model",
+  "model_version": "v45",
+  "sample_id": "SAMPLE-007",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "",
+  "pattern": "empty_body_due_to_data_quality"
+},
+{
+  "alert_id": "ALERT-004",
+  "model_id": "email_identification_model",
+  "model_version": "v45",
+  "sample_id": "SAMPLE-008",
+  "actual_label": "secure",
+  "predicted_label": "rfp",
+  "error_type": "false_negative",
+  "text": "",
+  "pattern": "empty_body_due_to_data_quality"
 }
 ]

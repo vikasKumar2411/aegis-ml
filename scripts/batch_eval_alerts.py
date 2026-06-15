@@ -143,7 +143,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    print("************args.eval_cases**************", args.eval_cases)
+    # print("************args.eval_cases**************", args.eval_cases)
     cases = load_eval_cases(args.eval_cases)
 
     results = [
