@@ -585,3 +585,5 @@ Example incidents:
 AegisML demonstrates a bounded autonomous AI system for ML operations:
 
 > Built a bounded autonomous ML incident investigation platform that uses LLM backed planning and root cause synthesis, deterministic diagnostic tools, evidence sufficiency validation, adaptive repair, human gated remediation, and an evaluation harness measuring root cause accuracy, diagnostic coverage, evidence sufficiency, repair success, unnecessary replan rate, and unsafe remediation prevention.
+
+
