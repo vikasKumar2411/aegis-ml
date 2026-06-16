@@ -1,17 +1,28 @@
+import streamlit as st
+
+st.set_page_config(
+    page_title="AegisML Demo Console",
+    page_icon="🛡️",
+    layout="wide",
+)
+
+st.title("AegisML Demo Console")
+st.caption("Bounded Autonomous ML Incident Investigation Platform")
+st.success("App loaded successfully.")
+
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-import streamlit as st
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT_DIR / "outputs" / "reports"
 OUTPUTS_DIR = ROOT_DIR / "outputs"
-
 
 ALERT_OPTIONS = {
     "ALERT-001": "new_secure_email_patterns",
@@ -25,32 +36,38 @@ ALERT_OPTIONS = {
 MODE_OPTIONS = ["deterministic", "llm-root-cause", "llm"]
 
 
-st.set_page_config(
-    page_title="AegisML Demo Console",
-    page_icon="🛡️",
-    layout="wide",
-)
+with st.expander("Startup diagnostics", expanded=False):
+    st.write(f"Root directory: {ROOT_DIR}")
+    st.write(f"Reports directory exists: {REPORTS_DIR.exists()}")
+    st.write(f"Outputs directory exists: {OUTPUTS_DIR.exists()}")
+    st.write(f"Python version: {sys.version}")
 
 
 def load_json(path: Path) -> Optional[Dict[str, Any]]:
-    if not path.exists():
+    try:
+        if not path.exists():
+            return None
+        with path.open("r", encoding="utf-8") as file:
+            return json.load(file)
+    except Exception as exc:
+        st.error(f"Failed to load JSON file: {path}")
+        st.exception(exc)
         return None
-
-    with path.open("r", encoding="utf-8") as file:
-        return json.load(file)
 
 
 def load_text(path: Path) -> Optional[str]:
-    if not path.exists():
+    try:
+        if not path.exists():
+            return None
+        with path.open("r", encoding="utf-8") as file:
+            return file.read()
+    except Exception as exc:
+        st.error(f"Failed to load text file: {path}")
+        st.exception(exc)
         return None
-
-    with path.open("r", encoding="utf-8") as file:
-        return file.read()
 
 
 def run_command(command: List[str]) -> subprocess.CompletedProcess:
-    import os
-
     env = os.environ.copy()
     existing_pythonpath = env.get("PYTHONPATH", "")
 
@@ -125,17 +142,6 @@ def run_eval_suite(mode: str) -> Dict[str, Any]:
         "eval_result": eval_result,
         "output_path": str(output_path),
     }
-
-
-def get_nested(data: Dict[str, Any], keys: List[str], default: Any = None) -> Any:
-    current = data
-
-    for key in keys:
-        if not isinstance(current, dict):
-            return default
-        current = current.get(key)
-
-    return current if current is not None else default
 
 
 def extract_root_cause(report: Dict[str, Any]) -> Dict[str, Any]:
@@ -255,6 +261,7 @@ def extract_plan_table(report: Dict[str, Any]) -> pd.DataFrame:
 
     return pd.DataFrame(rows)
 
+
 def build_agent_trace(report: Dict[str, Any]) -> List[Dict[str, Any]]:
     root = extract_root_cause(report)
     remediation = extract_remediation(report)
@@ -273,10 +280,12 @@ def build_agent_trace(report: Dict[str, Any]) -> List[Dict[str, Any]]:
     ) or report.get("root_cause_validation") or {}
 
     plan_validation = (
-        validation.get("plan_validation") if isinstance(validation, dict) else {}
+        validation.get("plan_validation")
+        if isinstance(validation, dict)
+        else {}
     ) or report.get("plan_validation") or {}
 
-    trace = [
+    return [
         {
             "agent": "Planner Agent",
             "status": "passed",
@@ -343,8 +352,6 @@ def build_agent_trace(report: Dict[str, Any]) -> List[Dict[str, Any]]:
         },
     ]
 
-    return trace
-
 
 def render_metric_card(label: str, value: Any):
     st.metric(label=label, value=value)
@@ -354,8 +361,14 @@ def render_overview(report: Dict[str, Any]):
     root = extract_root_cause(report)
     remediation = extract_remediation(report)
     metadata = extract_execution_metadata(report)
+    evidence_df = extract_evidence_table(report)
 
-    col1, col2, col3, col4 = st.columns(4)
+    st.info(
+        "LLMs reason and plan. Deterministic validators control allowed tools, "
+        "evidence sufficiency, repair, and remediation safety."
+    )
+
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
         render_metric_card("Root Cause", root["root_cause"])
@@ -364,13 +377,13 @@ def render_overview(report: Dict[str, Any]):
         render_metric_card("Confidence", root["confidence"])
 
     with col3:
-        render_metric_card("Replans", metadata["replans"])
+        render_metric_card("Evidence Items", len(evidence_df))
 
     with col4:
-        render_metric_card(
-            "Human Approval",
-            str(remediation["human_approval_required"]),
-        )
+        render_metric_card("Replans", metadata["replans"])
+
+    with col5:
+        render_metric_card("Human Approval", str(remediation["human_approval_required"]))
 
     st.subheader("Investigation Summary")
     st.write(root["summary"])
@@ -378,16 +391,12 @@ def render_overview(report: Dict[str, Any]):
     st.subheader("Recommended Action")
     st.code(remediation["recommended_action"])
 
-    st.info("No production changes are executed automatically. Remediation remains human gated.")
+    st.success("No production changes are executed automatically. Remediation remains human gated.")
 
 
 def render_agent_trace(report: Dict[str, Any]):
-    trace = build_agent_trace(report)
-
-    for item in trace:
-        status = item["status"]
-
-        with st.expander(f"{item['agent']} — {status}", expanded=True):
+    for item in build_agent_trace(report):
+        with st.expander(f"{item['agent']} — {item['status']}", expanded=True):
             st.markdown(f"**Input:** {item['input']}")
             st.markdown(f"**Action:** {item['action']}")
             st.markdown("**Output:**")
@@ -416,19 +425,13 @@ def render_root_cause(report: Dict[str, Any]):
     st.subheader("Reasoning Summary")
     st.write(root["summary"])
 
+    st.subheader("Alternatives Considered")
     alternatives = root.get("alternatives") or []
 
-    st.subheader("Alternatives Considered")
-
-    if not alternatives:
-        st.write("No alternatives recorded.")
-        return
-
-    if isinstance(alternatives, list):
-        for alternative in alternatives:
-            st.write(alternative)
-    else:
+    if alternatives:
         st.json(alternatives)
+    else:
+        st.write("No alternatives recorded.")
 
 
 def render_remediation(report: Dict[str, Any]):
@@ -440,10 +443,7 @@ def render_remediation(report: Dict[str, Any]):
         render_metric_card("Priority", remediation["priority"])
 
     with col2:
-        render_metric_card(
-            "Human Approval Required",
-            str(remediation["human_approval_required"]),
-        )
+        render_metric_card("Human Approval Required", str(remediation["human_approval_required"]))
 
     with col3:
         render_metric_card("Safety", "Read only diagnostics")
@@ -499,22 +499,13 @@ def render_eval_results(eval_result: Dict[str, Any]):
         render_metric_card("Cases", normal_cases)
 
     with col2:
-        render_metric_card(
-            "Root Cause Accuracy",
-            normal.get("root_cause_accuracy", "unknown"),
-        )
+        render_metric_card("Root Cause Accuracy", normal.get("root_cause_accuracy", "unknown"))
 
     with col3:
-        render_metric_card(
-            "Evidence Sufficiency",
-            normal.get("avg_evidence_sufficiency", "unknown"),
-        )
+        render_metric_card("Evidence Sufficiency", normal.get("avg_evidence_sufficiency", "unknown"))
 
     with col4:
-        render_metric_card(
-            "Unsafe Remediation",
-            normal.get("unsafe_remediation_count", "unknown"),
-        )
+        render_metric_card("Unsafe Remediation", normal.get("unsafe_remediation_count", "unknown"))
 
     st.subheader("Repair Stress Cases")
 
@@ -527,16 +518,124 @@ def render_eval_results(eval_result: Dict[str, Any]):
         render_metric_card("Repair Success", repair_success)
 
     with col3:
-        render_metric_card(
-            "Evidence Sufficiency",
-            stress.get("avg_evidence_sufficiency", "unknown"),
-        )
+        render_metric_card("Evidence Sufficiency", stress.get("avg_evidence_sufficiency", "unknown"))
 
     with col4:
-        render_metric_card(
-            "Unsafe Remediation",
-            stress.get("unsafe_remediation_count", "unknown"),
-        )
+        render_metric_card("Unsafe Remediation", stress.get("unsafe_remediation_count", "unknown"))
 
     st.subheader("Raw Eval Result")
     st.json(eval_result)
+
+
+with st.sidebar:
+    st.header("Run Investigation")
+
+    alert_id = st.selectbox(
+        "Select incident",
+        options=list(ALERT_OPTIONS.keys()),
+        index=list(ALERT_OPTIONS.keys()).index("ALERT-006"),
+        format_func=lambda item: f"{item} — {ALERT_OPTIONS[item]}",
+    )
+
+    mode = st.selectbox(
+        "Select mode",
+        options=MODE_OPTIONS,
+        index=MODE_OPTIONS.index("deterministic"),
+    )
+
+    st.caption("For hosted demos, deterministic mode is safest. LLM mode requires a configured provider.")
+
+    run_button = st.button("Run Investigation", type="primary")
+
+    st.divider()
+
+    st.header("Evaluation")
+
+    eval_mode = st.selectbox(
+        "Eval mode",
+        options=["deterministic", "llm"],
+        index=0,
+    )
+
+    run_eval_button = st.button("Run Eval Suite")
+
+
+if "report" not in st.session_state:
+    default_report = load_json(REPORTS_DIR / "REPORT-ALERT-006.json")
+    if default_report:
+        st.session_state.report = default_report
+        st.session_state.alert_id = "ALERT-006"
+
+if "eval_result" not in st.session_state:
+    default_eval = load_json(OUTPUTS_DIR / "eval_results_deterministic.json")
+    if default_eval:
+        st.session_state.eval_result = default_eval
+
+
+if run_button:
+    with st.spinner("Running AegisML investigation..."):
+        try:
+            result = run_investigation(alert_id, mode)
+            st.session_state.report = result["report"]
+            st.session_state.alert_id = alert_id
+            st.success("Investigation complete.")
+        except Exception as exc:
+            st.error("Investigation failed.")
+            st.exception(exc)
+
+
+if run_eval_button:
+    with st.spinner("Running evaluation suite..."):
+        try:
+            result = run_eval_suite(eval_mode)
+            st.session_state.eval_result = result["eval_result"]
+            st.success("Evaluation complete.")
+        except Exception as exc:
+            st.error("Evaluation failed.")
+            st.exception(exc)
+
+
+report = st.session_state.get("report")
+current_alert_id = st.session_state.get("alert_id", "ALERT-006")
+
+if not report:
+    st.warning("No report loaded. Run an investigation from the sidebar or check whether outputs/reports exists.")
+    st.stop()
+
+
+tabs = st.tabs(
+    [
+        "Overview",
+        "Agent Trace",
+        "Evidence",
+        "Root Cause",
+        "Remediation",
+        "Report",
+        "Eval Results",
+    ]
+)
+
+with tabs[0]:
+    render_overview(report)
+
+with tabs[1]:
+    render_agent_trace(report)
+
+with tabs[2]:
+    render_evidence(report)
+
+with tabs[3]:
+    render_root_cause(report)
+
+with tabs[4]:
+    render_remediation(report)
+
+with tabs[5]:
+    render_report(report, current_alert_id)
+
+with tabs[6]:
+    eval_result = st.session_state.get("eval_result")
+    if eval_result:
+        render_eval_results(eval_result)
+    else:
+        st.warning("No eval result loaded. Run eval from the sidebar.")
